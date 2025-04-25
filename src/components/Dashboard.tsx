@@ -1,12 +1,12 @@
 
 import React from 'react';
-import { CircleCheck, Clock, Code } from "lucide-react";
+import { CircleCheck, Code } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
 const Dashboard: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
       <Card className="glass-card">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">Questions Solved</CardTitle>
@@ -17,21 +17,6 @@ const Dashboard: React.FC = () => {
             <CircleCheck className="h-6 w-6 text-primary animate-pulse-slow" />
           </div>
           <Progress value={16} className="h-1 mt-3" />
-        </CardContent>
-      </Card>
-
-      <Card className="glass-card">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Time Invested</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold">14.5 hours</div>
-            <Clock className="h-6 w-6 text-primary animate-pulse-slow" />
-          </div>
-          <div className="text-xs text-muted-foreground mt-3">
-            Last session: 2 hours ago
-          </div>
         </CardContent>
       </Card>
 

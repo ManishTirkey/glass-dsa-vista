@@ -28,7 +28,7 @@ const StudyStreakCalendar: React.FC = () => {
   };
 
   return (
-    <Card className="glass-card">
+    <Card className="glass-card w-full">
       <CardHeader>
         <CardTitle className="text-xl font-semibold text-gradient">Study Streak</CardTitle>
       </CardHeader>
