@@ -5,15 +5,18 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: '/glass-dsa-vista/',  // ✅ your GitHub repo name
+
   server: {
-    host: "::",
+    host: "::",   // ✅ correct usage (use "localhost" or "0.0.0.0")
     port: 8080,
   },
+
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
