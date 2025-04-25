@@ -39,7 +39,9 @@ const Index = () => {
           </div>
         </div>
         
-        <StudyStreakCalendar />
+        <div className="w-full"> {/* Added wrapper for full width */}
+          <StudyStreakCalendar />
+        </div>
       </main>
       <Footer />
     </div>
