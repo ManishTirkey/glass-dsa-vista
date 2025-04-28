@@ -32,17 +32,19 @@ const StudyStreakCalendar: React.FC = () => {
       <CardHeader>
         <CardTitle className="text-xl font-semibold text-gradient">Study Streak</CardTitle>
       </CardHeader>
-      <CardContent>
-        <Calendar
-          mode="single"
-          selected={new Date()}
-          className="rounded-md border-0"
-          modifiers={{ study: studyDays }}
-          modifiersClassNames={{
-            study: "bg-primary/30 text-foreground rounded-md",
-          }}
-          disabled={{ before: new Date(2025, 0, 1) }}
-        />
+      <CardContent className="w-full">
+        <div className="w-full flex justify-center">
+          <Calendar
+            mode="single"
+            selected={new Date()}
+            className="rounded-md border-0 w-full max-w-[400px]"
+            modifiers={{ study: studyDays }}
+            modifiersClassNames={{
+              study: "bg-primary/30 text-foreground rounded-md",
+            }}
+            disabled={{ before: new Date(2025, 0, 1) }}
+          />
+        </div>
         <div className="mt-4">
           <div className="text-sm text-muted-foreground mb-2">Current Streak</div>
           <div className="text-2xl font-bold">3 days</div>
