@@ -1,10 +1,9 @@
 
 import React from 'react';
-import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const StudyStreakCalendar: React.FC = () => {
-  // Days when the user has studied
+  // Study days data
   const studyDays = [
     new Date(2025, 3, 1),
     new Date(2025, 3, 2),
@@ -19,43 +18,73 @@ const StudyStreakCalendar: React.FC = () => {
     new Date(2025, 3, 23),
   ];
 
-  const hasStudiedOnDay = (date: Date) => {
-    return studyDays.some(studyDay => 
-      studyDay.getDate() === date.getDate() && 
-      studyDay.getMonth() === date.getMonth() && 
-      studyDay.getFullYear() === date.getFullYear()
-    );
+  const months = ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
+  const weekDays = ['Mon', 'Wed', 'Fri'];
+  
+  // Generate grid data
+  const generateGrid = () => {
+    const grid = [];
+    for (let week = 0; week < 53; week++) {
+      const column = [];
+      for (let day = 0; day < 7; day++) {
+        const hasStudied = Math.random() < 0.2; // Random study days for demonstration
+        column.push(hasStudied);
+      }
+      grid.push(column);
+    }
+    return grid;
   };
+
+  const grid = generateGrid();
 
   return (
     <Card className="glass-card w-full">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold text-gradient">Study Streak</CardTitle>
+        <CardTitle className="text-xl font-semibold text-gradient">Study Contributions</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="w-full">
-          <Calendar
-            mode="single"
-            selected={new Date()}
-            className="w-full rounded-md border-0"
-            modifiers={{ study: studyDays }}
-            modifiersClassNames={{
-              study: "bg-primary/30 text-foreground rounded-md",
-            }}
-            disabled={{ before: new Date(2025, 0, 1) }}
-            styles={{
-              months: { width: '100%' },
-              month: { width: '100%' },
-              table: { width: '100%' },
-              row: { width: '100%', justifyContent: 'space-between' },
-              head_row: { width: '100%', justifyContent: 'space-between' },
-              cell: { width: 'auto' }
-            }}
-          />
-        </div>
-        <div className="mt-4">
-          <div className="text-sm text-muted-foreground mb-2">Current Streak</div>
-          <div className="text-2xl font-bold">3 days</div>
+        <div className="w-full overflow-x-auto">
+          <div className="min-w-full">
+            <div className="flex text-xs text-muted-foreground mb-2 justify-between px-8">
+              {months.map((month, i) => (
+                <span key={i}>{month}</span>
+              ))}
+            </div>
+            <div className="flex">
+              <div className="flex flex-col justify-between text-xs text-muted-foreground pr-2">
+                {weekDays.map((day, i) => (
+                  <span key={i}>{day}</span>
+                ))}
+              </div>
+              <div className="grid grid-flow-col gap-1">
+                {grid.map((week, weekIndex) => (
+                  <div key={weekIndex} className="grid grid-rows-7 gap-1">
+                    {week.map((hasStudied, dayIndex) => (
+                      <div
+                        key={dayIndex}
+                        className={`w-3 h-3 rounded-sm ${
+                          hasStudied 
+                            ? 'bg-primary/60' 
+                            : 'bg-secondary/30'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center justify-end mt-4 text-xs text-muted-foreground">
+              <span>Less</span>
+              <div className="flex gap-1 mx-2">
+                <div className="w-3 h-3 rounded-sm bg-secondary/30" />
+                <div className="w-3 h-3 rounded-sm bg-primary/30" />
+                <div className="w-3 h-3 rounded-sm bg-primary/50" />
+                <div className="w-3 h-3 rounded-sm bg-primary/70" />
+                <div className="w-3 h-3 rounded-sm bg-primary" />
+              </div>
+              <span>More</span>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>
