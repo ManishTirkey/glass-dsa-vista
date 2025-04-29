@@ -9,6 +9,7 @@ interface QuestionCardProps {
   topics: string[];
   lastAttempted?: string;
   completed: boolean;
+  onClick?: () => void;
 }
 
 const difficultyColors = {
@@ -22,10 +23,14 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   difficulty, 
   topics, 
   lastAttempted,
-  completed 
+  completed,
+  onClick
 }) => {
   return (
-    <Card className={`glass-card transition-all duration-300 hover:shadow-lg hover:border-primary/50 cursor-pointer ${completed ? 'border-green-500/30' : ''}`}>
+    <Card 
+      className={`glass-card transition-all duration-300 hover:shadow-lg hover:border-primary/50 cursor-pointer ${completed ? 'border-green-500/30' : ''}`}
+      onClick={onClick}
+    >
       <CardHeader className="pb-2">
         <CardTitle className="text-lg">{title}</CardTitle>
         <div className="flex items-center space-x-2 mt-1">

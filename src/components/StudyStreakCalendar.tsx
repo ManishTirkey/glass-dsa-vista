@@ -35,7 +35,7 @@ const StudyStreakCalendar: React.FC = () => {
   const weekDays = ['Mon', 'Wed', 'Fri'];
 
   const contributionColors = {
-    0: 'bg-[#1a1f2c]/20',  // Dark background for no contributions
+    0: 'bg-[#1a1f2c]/20 border border-gray-700',  // Dark background with border for no contributions
     1: 'bg-[#0EA5E9]/20',  // Light contribution
     2: 'bg-[#0EA5E9]/40',  // Medium contribution
     3: 'bg-[#0EA5E9]/60',  // High contribution
@@ -45,7 +45,7 @@ const StudyStreakCalendar: React.FC = () => {
   return (
     <Card className="glass-card w-full">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-xl font-semibold text-gradient">Study Contributions</CardTitle>
+        <CardTitle className="text-xl font-semibold text-gradient">Study</CardTitle>
         <Select value={selectedYear} onValueChange={setSelectedYear}>
           <SelectTrigger className="w-[100px]">
             <SelectValue>{selectedYear}</SelectValue>
