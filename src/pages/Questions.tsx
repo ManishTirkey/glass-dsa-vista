@@ -355,6 +355,7 @@ const Questions: React.FC = () => {
                         </AccordionTrigger>
                         <AccordionContent>
                           <div className="space-y-4">
+                            <h3 className="font-semibold text-lg">Approach</h3>
                             <p>{approach.description}</p>
                             
                             <div className="relative">

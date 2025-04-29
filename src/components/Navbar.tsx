@@ -27,12 +27,11 @@ const Navbar: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="icon" className="text-foreground/80 hover:text-foreground">
-            <Home className="h-5 w-5" />
-          </Button>
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/80 rounded-full">
-            Add Question
-          </Button>
+          <Link to="/">
+            <Button variant="ghost" size="icon" className="text-foreground/80 hover:text-foreground">
+              <Home className="h-5 w-5" />
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>
