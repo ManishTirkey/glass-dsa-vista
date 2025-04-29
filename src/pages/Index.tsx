@@ -23,23 +23,23 @@ const Index = () => {
           </p>
         </div>
 
-        <div className="flex justify-between items-center mb-8">
-          <Dashboard />
-          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/80">
-            <Link to="/questions">View All Questions</Link>
-          </Button>
+        <Dashboard />
+        
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-gradient">Recent Questions</h2>
+            <Button asChild size="sm" className="bg-primary text-primary-foreground hover:bg-primary/80">
+              <Link to="/questions">View All Questions</Link>
+            </Button>
+          </div>
+          <RecentQuestions />
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
-          <div className="lg:col-span-2">
-            <RecentQuestions />
-          </div>
-          <div>
-            <TopicProgress />
-          </div>
+        <div className="mb-8">
+          <TopicProgress />
         </div>
         
-        <div className="w-full"> {/* Added wrapper for full width */}
+        <div className="w-full">
           <StudyStreakCalendar />
         </div>
       </main>
