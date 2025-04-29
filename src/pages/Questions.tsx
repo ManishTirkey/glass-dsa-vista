@@ -8,10 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Copy, ChevronDown, Code, BookOpen, Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import topics from '../data/topics';
+import { Copy, ChevronDown, Code, BookOpen } from 'lucide-react';
 
 interface Question {
   id: string;
@@ -39,9 +36,6 @@ interface Question {
 
 const Questions: React.FC = () => {
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [difficultyFilter, setDifficultyFilter] = useState<string>('all');
-  const [topicFilter, setTopicFilter] = useState<string>('all');
   
   const questions: Question[] = [
     {
@@ -252,23 +246,11 @@ const Questions: React.FC = () => {
     Hard: "bg-red-500/20 text-red-500"
   };
 
-  // Filter questions based on search query and filters
-  const filteredQuestions = questions.filter(question => {
-    const matchesSearch = question.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          question.shortDescription.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesDifficulty = difficultyFilter === 'all' || question.difficulty === difficultyFilter;
-    
-    const matchesTopic = topicFilter === 'all' || question.topics.includes(topicFilter);
-    
-    return matchesSearch && matchesDifficulty && matchesTopic;
-  });
-
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 max-w-7xl w-full mx-auto pt-20 px-4 md:px-8 pb-8 overflow-hidden">
-        <div className="mb-6 mt-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto pt-20 px-4 md:px-8 pb-8">
+        <div className="mb-8 mt-6">
           <h1 className="text-3xl md:text-4xl font-bold text-gradient mb-2 animate-fade-in">
             DSA Questions Library
           </h1>
@@ -277,178 +259,130 @@ const Questions: React.FC = () => {
           </p>
         </div>
 
-        <div className="mb-6 flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="h-4 w-4 text-muted-foreground absolute left-3 top-1/2 transform -translate-y-1/2" />
-            <Input 
-              placeholder="Search questions..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <div className="flex gap-4">
-            <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Difficulty" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Difficulties</SelectItem>
-                <SelectItem value="Easy">Easy</SelectItem>
-                <SelectItem value="Medium">Medium</SelectItem>
-                <SelectItem value="Hard">Hard</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={topicFilter} onValueChange={setTopicFilter}>
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Topic" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Topics</SelectItem>
-                {topics.map(topic => (
-                  <SelectItem key={topic.id} value={topic.name}>{topic.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-[calc(100vh-280px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Left side - Questions List */}
-          <div className="lg:col-span-2 overflow-hidden">
-            <Card className="glass-card h-full">
-              <CardContent className="pt-6 h-full">
-                <ScrollArea className="h-[calc(100vh-340px)]">
-                  <div className="space-y-4">
-                    {filteredQuestions.length > 0 ? (
-                      filteredQuestions.map((question) => (
-                        <Collapsible 
-                          key={question.id} 
-                          className="border border-border/50 rounded-lg mb-4"
-                          open={selectedQuestion?.id === question.id}
-                          onOpenChange={() => setSelectedQuestion(selectedQuestion?.id === question.id ? null : question)}
-                        >
-                          <div className="p-4 flex justify-between items-start">
-                            <div>
-                              <h3 className="font-medium text-lg">{question.title}</h3>
-                              <div className="flex flex-wrap gap-2 mt-1">
-                                <Badge variant="outline" className={`${difficultyColors[question.difficulty]} border-none`}>
-                                  {question.difficulty}
-                                </Badge>
-                                {question.completed && (
-                                  <Badge variant="outline" className="bg-green-500/20 text-green-500 border-none">
-                                    Completed
-                                  </Badge>
-                                )}
-                              </div>
-                              <p className="text-sm text-muted-foreground mt-2">
-                                {question.shortDescription}
-                              </p>
-                            </div>
-                            <CollapsibleTrigger asChild>
-                              <Button variant="outline" size="sm" className="glass border-white/10 text-foreground hover:bg-white/10">
-                                <ChevronDown className={`h-4 w-4 transition-transform ${selectedQuestion?.id === question.id ? 'transform rotate-180' : ''}`} />
-                              </Button>
-                            </CollapsibleTrigger>
-                          </div>
-                          
-                          <CollapsibleContent>
-                            <div className="px-4 pb-4">
-                              <div className="flex flex-wrap gap-1 mb-2">
-                                {question.topics.map((topic, index) => (
-                                  <span key={index} className="text-xs bg-secondary/50 rounded-full px-2 py-0.5">{topic}</span>
-                                ))}
-                              </div>
-                              <p className="text-sm">{question.description}</p>
-                              
-                              <h4 className="font-medium mt-3">Examples:</h4>
-                              {question.examples.map((example, index) => (
-                                <div key={index} className="bg-secondary/30 p-2 rounded-md text-sm mt-2">
-                                  <p><strong>Input:</strong> {example.input}</p>
-                                  <p><strong>Output:</strong> {example.output}</p>
-                                  {example.explanation && (
-                                    <p><strong>Explanation:</strong> {example.explanation}</p>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          </CollapsibleContent>
-                        </Collapsible>
-                      ))
-                    ) : (
-                      <div className="text-center py-8 text-muted-foreground">
-                        No questions match your search criteria.
+          <div className="lg:col-span-2">
+            <Card className="glass-card">
+              <CardContent className="pt-6 space-y-4">
+                {questions.map((question) => (
+                  <Collapsible 
+                    key={question.id} 
+                    className="border border-border/50 rounded-lg mb-4"
+                    open={selectedQuestion?.id === question.id}
+                    onOpenChange={() => setSelectedQuestion(selectedQuestion?.id === question.id ? null : question)}
+                  >
+                    <div className="p-4 flex justify-between items-start">
+                      <div>
+                        <h3 className="font-medium text-lg">{question.title}</h3>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          <Badge variant="outline" className={`${difficultyColors[question.difficulty]} border-none`}>
+                            {question.difficulty}
+                          </Badge>
+                          {question.completed && (
+                            <Badge variant="outline" className="bg-green-500/20 text-green-500 border-none">
+                              Completed
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          {question.shortDescription}
+                        </p>
                       </div>
-                    )}
-                  </div>
-                </ScrollArea>
+                      <CollapsibleTrigger asChild>
+                        <Button variant="outline" size="sm" className="glass border-white/10 text-foreground hover:bg-white/10">
+                          <ChevronDown className={`h-4 w-4 transition-transform ${selectedQuestion?.id === question.id ? 'transform rotate-180' : ''}`} />
+                        </Button>
+                      </CollapsibleTrigger>
+                    </div>
+                    
+                    <CollapsibleContent>
+                      <div className="px-4 pb-4">
+                        <div className="flex flex-wrap gap-1 mb-2">
+                          {question.topics.map((topic, index) => (
+                            <span key={index} className="text-xs bg-secondary/50 rounded-full px-2 py-0.5">{topic}</span>
+                          ))}
+                        </div>
+                        <p className="text-sm">{question.description}</p>
+                        
+                        <h4 className="font-medium mt-3">Examples:</h4>
+                        {question.examples.map((example, index) => (
+                          <div key={index} className="bg-secondary/30 p-2 rounded-md text-sm mt-2">
+                            <p><strong>Input:</strong> {example.input}</p>
+                            <p><strong>Output:</strong> {example.output}</p>
+                            {example.explanation && (
+                              <p><strong>Explanation:</strong> {example.explanation}</p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                ))}
               </CardContent>
             </Card>
           </div>
           
           {/* Right side - Solution Details */}
-          <div className="lg:col-span-3 overflow-hidden">
+          <div className="lg:col-span-3">
             {selectedQuestion ? (
-              <Card className="glass-card h-full">
-                <CardContent className="pt-6 h-full">
-                  <ScrollArea className="h-[calc(100vh-340px)]">
-                    <div className="mb-4">
-                      <h2 className="text-2xl font-semibold">{selectedQuestion.title} - Solutions</h2>
-                      <div className="flex flex-wrap gap-2 items-center mt-2">
-                        <Badge variant="outline" className={`${difficultyColors[selectedQuestion.difficulty]} border-none`}>
-                          {selectedQuestion.difficulty}
+              <Card className="glass-card">
+                <CardContent className="pt-6">
+                  <div className="mb-4">
+                    <h2 className="text-2xl font-semibold">{selectedQuestion.title} - Solutions</h2>
+                    <div className="flex flex-wrap gap-2 items-center mt-2">
+                      <Badge variant="outline" className={`${difficultyColors[selectedQuestion.difficulty]} border-none`}>
+                        {selectedQuestion.difficulty}
+                      </Badge>
+                      {selectedQuestion.completed && (
+                        <Badge variant="outline" className="bg-green-500/20 text-green-500 border-none">
+                          Completed
                         </Badge>
-                        {selectedQuestion.completed && (
-                          <Badge variant="outline" className="bg-green-500/20 text-green-500 border-none">
-                            Completed
-                          </Badge>
-                        )}
-                        {selectedQuestion.topics.map((topic, index) => (
-                          <span key={index} className="text-xs bg-secondary/50 rounded-full px-2 py-0.5">{topic}</span>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <Accordion type="single" collapsible className="w-full">
-                      {selectedQuestion.approaches.map((approach, index) => (
-                        <AccordionItem key={index} value={`approach-${index}`}>
-                          <AccordionTrigger className="flex items-center">
-                            <div className="flex gap-2 items-center">
-                              {index === 0 ? <BookOpen className="h-4 w-4" /> : <Code className="h-4 w-4" />}
-                              <span>{approach.name}</span>
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <div className="space-y-4">
-                              <p>{approach.description}</p>
-                              
-                              <div className="relative">
-                                <div className="absolute top-2 right-2">
-                                  <Button 
-                                    size="sm" 
-                                    variant="ghost" 
-                                    onClick={() => copyToClipboard(approach.solution)}
-                                    className="h-7 w-7 p-0"
-                                  >
-                                    <Copy className="h-4 w-4" />
-                                  </Button>
-                                </div>
-                                <pre className="bg-secondary/30 p-3 rounded-md overflow-auto text-sm">
-                                  <code>{approach.solution}</code>
-                                </pre>
-                              </div>
-                              
-                              <h4 className="text-sm font-medium">Complexity Analysis</h4>
-                              <ul className="text-sm space-y-1">
-                                <li><strong>Time Complexity:</strong> {approach.complexity.time}</li>
-                                <li><strong>Space Complexity:</strong> {approach.complexity.space}</li>
-                              </ul>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
+                      )}
+                      {selectedQuestion.topics.map((topic, index) => (
+                        <span key={index} className="text-xs bg-secondary/50 rounded-full px-2 py-0.5">{topic}</span>
                       ))}
-                    </Accordion>
-                  </ScrollArea>
+                    </div>
+                  </div>
+                  
+                  <Accordion type="single" collapsible className="w-full">
+                    {selectedQuestion.approaches.map((approach, index) => (
+                      <AccordionItem key={index} value={`approach-${index}`}>
+                        <AccordionTrigger className="flex items-center">
+                          <div className="flex gap-2 items-center">
+                            {index === 0 ? <BookOpen className="h-4 w-4" /> : <Code className="h-4 w-4" />}
+                            <span>{approach.name}</span>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="space-y-4">
+                            <p>{approach.description}</p>
+                            
+                            <div className="relative">
+                              <div className="absolute top-2 right-2">
+                                <Button 
+                                  size="sm" 
+                                  variant="ghost" 
+                                  onClick={() => copyToClipboard(approach.solution)}
+                                  className="h-7 w-7 p-0"
+                                >
+                                  <Copy className="h-4 w-4" />
+                                </Button>
+                              </div>
+                              <pre className="bg-secondary/30 p-3 rounded-md overflow-auto text-sm">
+                                <code>{approach.solution}</code>
+                              </pre>
+                            </div>
+                            
+                            <h4 className="text-sm font-medium">Complexity Analysis</h4>
+                            <ul className="text-sm space-y-1">
+                              <li><strong>Time Complexity:</strong> {approach.complexity.time}</li>
+                              <li><strong>Space Complexity:</strong> {approach.complexity.space}</li>
+                            </ul>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
                 </CardContent>
               </Card>
             ) : (

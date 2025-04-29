@@ -1,11 +1,13 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Dashboard from '@/components/Dashboard';
 import RecentQuestions from '@/components/RecentQuestions';
 import TopicProgress from '@/components/TopicProgress';
 import StudyStreakCalendar from '@/components/StudyStreakCalendar';
 import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   return (
@@ -21,7 +23,12 @@ const Index = () => {
           </p>
         </div>
 
-        <Dashboard />
+        <div className="flex justify-between items-center mb-8">
+          <Dashboard />
+          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/80">
+            <Link to="/questions">View All Questions</Link>
+          </Button>
+        </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
           <div className="lg:col-span-2">
@@ -32,7 +39,7 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="w-full mb-8">
+        <div className="w-full"> {/* Added wrapper for full width */}
           <StudyStreakCalendar />
         </div>
       </main>

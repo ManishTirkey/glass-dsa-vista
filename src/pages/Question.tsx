@@ -7,8 +7,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Copy } from 'lucide-react';
-import topics from '../data/topics';
 
 const Question = () => {
   const { id } = useParams();
@@ -56,15 +54,10 @@ const Question = () => {
     notes: "Remember that the key insight here is that we only need to scan the array once, using the hash map to check if the complement exists."
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    // In a real app, would show toast notification
-  };
-
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 max-w-7xl w-full mx-auto pt-20 px-4 md:px-8 pb-8 overflow-hidden">
+      <main className="flex-1 max-w-7xl w-full mx-auto pt-20 px-4 md:px-8 pb-8">
         <div className="mb-6">
           <div className="flex flex-wrap justify-between items-start gap-4 mb-6">
             <div>
@@ -101,82 +94,68 @@ const Question = () => {
             </div>
           </div>
           
-          <div className="h-[calc(100vh-240px)]">
-            <Tabs defaultValue="description" className="w-full h-full">
-              <TabsList className="glass w-full justify-start">
-                <TabsTrigger value="description">Description</TabsTrigger>
-                <TabsTrigger value="solution">Solution</TabsTrigger>
-                <TabsTrigger value="notes">Notes</TabsTrigger>
-              </TabsList>
-              
-              <div className="h-[calc(100vh-290px)] overflow-auto">
-                <TabsContent value="description" className="mt-4 h-full">
-                  <Card className="glass-card h-full">
-                    <CardContent className="pt-6">
-                      <div className="prose dark:prose-invert max-w-none">
-                        <p className="mb-6">{question.description}</p>
-                        
-                        <h3 className="text-lg font-semibold mb-2">Examples:</h3>
-                        {question.examples.map((example, index) => (
-                          <div key={index} className="mb-4 space-y-2">
-                            <div className="bg-secondary/30 p-3 rounded-md">
-                              <p><strong>Input:</strong> {example.input}</p>
-                              <p><strong>Output:</strong> {example.output}</p>
-                              {example.explanation && (
-                                <p><strong>Explanation:</strong> {example.explanation}</p>
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-                
-                <TabsContent value="solution" className="mt-4 h-full">
-                  <Card className="glass-card h-full">
-                    <CardContent className="pt-6">
-                      <div className="prose dark:prose-invert max-w-none space-y-4">
-                        <h3 className="text-lg font-semibold">Approach</h3>
-                        <p>{question.approach}</p>
-                        
-                        <h3 className="text-lg font-semibold">Solution Code</h3>
-                        <div className="relative">
-                          <Button 
-                            size="sm" 
-                            variant="ghost" 
-                            onClick={() => copyToClipboard(question.solution)}
-                            className="absolute top-2 right-2 h-7 w-7 p-0"
-                          >
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                          <pre className="bg-secondary/30 p-3 rounded-md overflow-auto text-sm">
-                            <code>{question.solution}</code>
-                          </pre>
+          <Tabs defaultValue="description" className="w-full">
+            <TabsList className="glass w-full justify-start">
+              <TabsTrigger value="description">Description</TabsTrigger>
+              <TabsTrigger value="solution">Solution</TabsTrigger>
+              <TabsTrigger value="notes">Notes</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="description" className="mt-4">
+              <Card className="glass-card">
+                <CardContent className="pt-6">
+                  <div className="prose dark:prose-invert max-w-none">
+                    <p className="mb-6">{question.description}</p>
+                    
+                    <h3 className="text-lg font-semibold mb-2">Examples:</h3>
+                    {question.examples.map((example, index) => (
+                      <div key={index} className="mb-4 space-y-2">
+                        <div className="bg-secondary/30 p-3 rounded-md">
+                          <p><strong>Input:</strong> {example.input}</p>
+                          <p><strong>Output:</strong> {example.output}</p>
+                          {example.explanation && (
+                            <p><strong>Explanation:</strong> {example.explanation}</p>
+                          )}
                         </div>
-                        
-                        <h3 className="text-lg font-semibold">Complexity Analysis</h3>
-                        <ul>
-                          <li><strong>Time Complexity:</strong> {question.complexity.time}</li>
-                          <li><strong>Space Complexity:</strong> {question.complexity.space}</li>
-                        </ul>
                       </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-                
-                <TabsContent value="notes" className="mt-4 h-full">
-                  <Card className="glass-card h-full">
-                    <CardContent className="pt-6">
-                      <div className="prose dark:prose-invert max-w-none">
-                        <p>{question.notes || "No notes added yet. Add your thoughts and learning here."}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </div>
-            </Tabs>
-          </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="solution" className="mt-4">
+              <Card className="glass-card">
+                <CardContent className="pt-6">
+                  <div className="prose dark:prose-invert max-w-none space-y-4">
+                    <h3 className="text-lg font-semibold">Approach</h3>
+                    <p>{question.approach}</p>
+                    
+                    <h3 className="text-lg font-semibold">Solution Code</h3>
+                    <pre className="bg-secondary/30 p-3 rounded-md overflow-auto text-sm">
+                      <code>{question.solution}</code>
+                    </pre>
+                    
+                    <h3 className="text-lg font-semibold">Complexity Analysis</h3>
+                    <ul>
+                      <li><strong>Time Complexity:</strong> {question.complexity.time}</li>
+                      <li><strong>Space Complexity:</strong> {question.complexity.space}</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="notes" className="mt-4">
+              <Card className="glass-card">
+                <CardContent className="pt-6">
+                  <div className="prose dark:prose-invert max-w-none">
+                    <p>{question.notes || "No notes added yet. Add your thoughts and learning here."}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
       <Footer />
