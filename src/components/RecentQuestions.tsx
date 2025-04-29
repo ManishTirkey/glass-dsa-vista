@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import QuestionCard from './QuestionCard';
 
 const RecentQuestions: React.FC = () => {
@@ -48,14 +49,15 @@ const RecentQuestions: React.FC = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {questions.map((question, index) => (
-        <QuestionCard 
-          key={index}
-          title={question.title}
-          difficulty={question.difficulty}
-          topics={question.topics}
-          lastAttempted={question.lastAttempted}
-          completed={question.completed}
-        />
+        <Link to="/questions" key={index} className="block">
+          <QuestionCard 
+            title={question.title}
+            difficulty={question.difficulty}
+            topics={question.topics}
+            lastAttempted={question.lastAttempted}
+            completed={question.completed}
+          />
+        </Link>
       ))}
     </div>
   );
