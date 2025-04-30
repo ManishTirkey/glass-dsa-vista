@@ -499,7 +499,8 @@ export const questions: Question[] = [
         solution: `function climbStairs(n) {
   if (n <= 2) return n;
   
-  const dp = new Array(n + 1);\n  dp[1] = 1;
+  const dp = new Array(n + 1);
+  dp[1] = 1;
   dp[2] = 2;
   
   for (let i = 3; i <= n; i++) {
@@ -884,4 +885,4 @@ export const questions: Question[] = [
       },
       {
         name: 'Bottom-Up Recursive (Optimized)',
-        description: 'Calculate the height as we check for balance, terminating early if unbalanced.',
+        description: 'Calculate the height as we check for balance, terminating early if
