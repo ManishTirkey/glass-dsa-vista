@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import QuestionList from '@/components/QuestionList';
 import QuestionDetail from '@/components/QuestionDetail';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { questions } from '@/data/questionData';
 
 const Questions: React.FC = () => {
@@ -25,16 +26,20 @@ const Questions: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Left side - Questions List */}
           <div className="lg:col-span-2">
-            <QuestionList 
-              questions={questions} 
-              selectedQuestion={selectedQuestion}
-              onSelectQuestion={setSelectedQuestion}
-            />
+            <ScrollArea className="h-[70vh]">
+              <QuestionList 
+                questions={questions} 
+                selectedQuestion={selectedQuestion}
+                onSelectQuestion={setSelectedQuestion}
+              />
+            </ScrollArea>
           </div>
           
           {/* Right side - Solution Details */}
           <div className="lg:col-span-3">
-            <QuestionDetail question={selectedQuestion} />
+            <ScrollArea className="h-[70vh]">
+              <QuestionDetail question={selectedQuestion} />
+            </ScrollArea>
           </div>
         </div>
       </main>
