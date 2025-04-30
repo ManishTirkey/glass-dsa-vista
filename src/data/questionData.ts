@@ -1,3 +1,4 @@
+
 export interface QuestionExample {
   input: string;
   output: string;
@@ -885,4 +886,38 @@ export const questions: Question[] = [
       },
       {
         name: 'Bottom-Up Recursive (Optimized)',
-        description: 'Calculate the height as we check for balance, terminating early if
+        description: 'Calculate the height as we check for balance, terminating early if unbalanced.',
+        solution: `function isBalanced(root) {
+  // Helper function that returns height if balanced, -1 if not balanced
+  function checkHeight(node) {
+    if (node === null) return 0;
+    
+    const leftHeight = checkHeight(node.left);
+    // If left subtree is unbalanced, propagate the result
+    if (leftHeight === -1) return -1;
+    
+    const rightHeight = checkHeight(node.right);
+    // If right subtree is unbalanced, propagate the result
+    if (rightHeight === -1) return -1;
+    
+    // Check if current node is balanced
+    if (Math.abs(leftHeight - rightHeight) > 1) {
+      return -1;  // Current node is unbalanced
+    }
+    
+    // Return height of current node
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+  
+  return checkHeight(root) !== -1;
+}`,
+        complexity: {
+          time: 'O(n) as we only visit each node once.',
+          space: 'O(h) for the recursion stack where h is the height of the tree.'
+        }
+      }
+    ],
+    completed: false
+  }
+  // Add any additional questions after this
+];
