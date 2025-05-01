@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import QuestionList from '@/components/QuestionList';
 import QuestionDetail from '@/components/QuestionDetail';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { questions } from '@/data/questionData';
+import { questions } from '@/data/questionsData';
 
 const Questions: React.FC = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);

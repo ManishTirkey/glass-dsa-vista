@@ -1,0 +1,78 @@
+
+[
+  {
+    "id": "1",
+    "title": "Two Sum",
+    "difficulty": "Easy",
+    "topics": ["Arrays", "Hash Table"],
+    "shortDescription": "Find two numbers in an array that add up to a target value.",
+    "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.",
+    "examples": [
+      {
+        "input": "nums = [2,7,11,15], target = 9",
+        "output": "[0,1]",
+        "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."
+      },
+      {
+        "input": "nums = [3,2,4], target = 6",
+        "output": "[1,2]",
+        "explanation": "Because nums[1] + nums[2] == 6, we return [1, 2]."
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Brute Force",
+        "description": "Check all possible pairs of numbers in the array to see if they add up to the target.",
+        "solution": "function twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) {\n        return [i, j];\n      }\n    }\n  }\n  return [];\n}",
+        "complexity": {
+          "time": "O(n²) where n is the length of the array.",
+          "space": "O(1), constant space."
+        }
+      },
+      {
+        "name": "Hash Map (One Pass)",
+        "description": "Use a hash map to store previously seen values and their indices. For each number, check if the complement exists in the map.",
+        "solution": "function twoSum(nums, target) {\n  const map = new Map();\n  \n  for (let i = 0; i < nums.length; i++) {\n    const complement = target - nums[i];\n    \n    if (map.has(complement)) {\n      return [map.get(complement), i];\n    }\n    \n    map.set(nums[i], i);\n  }\n  \n  return [];\n}",
+        "complexity": {
+          "time": "O(n) where n is the length of the array.",
+          "space": "O(n) for the hash map."
+        }
+      }
+    ],
+    "completed": true
+  },
+  {
+    "id": "2",
+    "title": "Valid Parentheses",
+    "difficulty": "Easy",
+    "topics": ["Stack", "String"],
+    "shortDescription": "Determine if a string of brackets is valid.",
+    "description": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if: Open brackets must be closed by the same type of brackets, and Open brackets must be closed in the correct order.",
+    "examples": [
+      {
+        "input": "s = \"()\"",
+        "output": "true"
+      },
+      {
+        "input": "s = \"()[]{}\"",
+        "output": "true"
+      },
+      {
+        "input": "s = \"(]\"",
+        "output": "false"
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Stack",
+        "description": "Use a stack to keep track of opening brackets and ensure they match with the closing ones.",
+        "solution": "function isValid(s) {\n  const stack = [];\n  const map = {\n    '(': ')',\n    '[': ']',\n    '{': '}'\n  };\n  \n  for (let i = 0; i < s.length; i++) {\n    const char = s[i];\n    \n    if (map[char]) {\n      // If it's an opening bracket, push to stack\n      stack.push(char);\n    } else {\n      // If it's a closing bracket\n      const last = stack.pop();\n      \n      // If the mapping doesn't match or stack was empty, return false\n      if (map[last] !== char) {\n        return false;\n      }\n    }\n  }\n  \n  // If the stack is empty, all brackets were matched properly\n  return stack.length === 0;\n}",
+        "complexity": {
+          "time": "O(n) where n is the length of the string.",
+          "space": "O(n) in worst case for the stack."
+        }
+      }
+    ],
+    "completed": false
+  }
+]
