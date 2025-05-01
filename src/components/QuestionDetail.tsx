@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Code, Copy } from 'lucide-react';
-import { Question } from '@/data/questionData';
+import { Question } from '@/data/questionsData';
 
 interface QuestionDetailProps {
   question: Question | null;
@@ -96,6 +96,41 @@ const QuestionDetail: React.FC<QuestionDetailProps> = ({ question }) => {
               </AccordionContent>
             </AccordionItem>
           ))}
+          
+          {question.answer && (
+            <AccordionItem value="answer">
+              <AccordionTrigger className="flex items-center">
+                <div className="flex gap-2 items-center">
+                  <Code className="h-4 w-4" />
+                  <span>Answer</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg">Answer</h3>
+                  <p className="whitespace-pre-line">{question.answer.explanation}</p>
+                  
+                  {question.answer.code && (
+                    <div className="relative">
+                      <div className="absolute top-2 right-2">
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          onClick={() => copyToClipboard(question.answer.code)}
+                          className="h-7 w-7 p-0"
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <pre className="bg-secondary/30 p-3 rounded-md overflow-auto text-sm">
+                        <code>{question.answer.code}</code>
+                      </pre>
+                    </div>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          )}
         </Accordion>
       </CardContent>
     </Card>

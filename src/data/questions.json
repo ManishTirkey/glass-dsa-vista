@@ -39,7 +39,11 @@
         }
       }
     ],
-    "completed": true
+    "completed": true,
+    "answer": {
+      "code": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nfunction twoSum(nums, target) {\n  // Create a map to store values we've seen and their indices\n  const seen = new Map();\n  \n  // Iterate through the array once\n  for (let i = 0; i < nums.length; i++) {\n    // Calculate what number we need to find\n    const complement = target - nums[i];\n    \n    // If we've seen the complement before, we found our answer\n    if (seen.has(complement)) {\n      return [seen.get(complement), i];\n    }\n    \n    // Otherwise, store the current number and its index\n    seen.set(nums[i], i);\n  }\n  \n  // If no solution is found (problem states there will always be one)\n  return [];\n}",
+      "explanation": "My approach uses a hash map to store numbers as we iterate through the array. For each number, we calculate what other number (complement) would be needed to reach the target sum.\n\nIf we've already seen that complement in our previous iterations, we have our answer! If not, we add the current number to our hash map and continue.\n\nThis is an efficient O(n) time complexity solution because hash map lookups are O(1), and we only need to go through the array once. The space complexity is O(n) in the worst case where we might need to store most elements in the hash map before finding a match."
+    }
   },
   {
     "id": "2",

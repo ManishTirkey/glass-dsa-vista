@@ -17,6 +17,11 @@ export interface QuestionApproach {
   complexity: ApproachComplexity;
 }
 
+export interface QuestionAnswer {
+  code: string;
+  explanation: string;
+}
+
 export interface Question {
   id: string;
   title: string;
@@ -27,6 +32,7 @@ export interface Question {
   examples: QuestionExample[];
   approaches: QuestionApproach[];
   completed: boolean;
+  answer?: QuestionAnswer;
 }
 
 // Import the JSON file
@@ -67,6 +73,10 @@ export const createQuestionTemplate = (): Question => {
       solution: "",
       complexity: { time: "", space: "" }
     }],
-    completed: false
+    completed: false,
+    answer: {
+      code: "",
+      explanation: ""
+    }
   };
 };

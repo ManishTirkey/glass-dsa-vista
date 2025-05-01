@@ -41,7 +41,11 @@ To add a new question:
       }
     }
   ],
-  "completed": false
+  "completed": false,
+  "answer": {
+    "code": "Your full solution code here",
+    "explanation": "Explanation of your solution approach"
+  }
 }
 ```
 
@@ -65,3 +69,6 @@ To add a new question:
     - `time` (string): Time complexity
     - `space` (string): Space complexity
 - `completed` (boolean): Indicates if the question has been completed
+- `answer` (object, optional): Your own solution and explanation
+  - `code` (string): Your implementation of the solution
+  - `explanation` (string): Detailed explanation of your approach and thought process

@@ -7,52 +7,33 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Copy } from 'lucide-react';
+import { questions } from '@/data/questionsData'; 
 
 const Question = () => {
   const { id } = useParams();
+  
+  // Find the question from our questions data
+  const question = questions.find(q => q.id === id);
 
-  // For demo purposes, hardcoded question data
-  const question = {
-    id: id,
-    title: "Two Sum",
-    difficulty: "Easy",
-    description: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.",
-    examples: [
-      {
-        input: "nums = [2,7,11,15], target = 9",
-        output: "[0,1]",
-        explanation: "Because nums[0] + nums[1] == 9, we return [0, 1]."
-      },
-      {
-        input: "nums = [3,2,4], target = 6",
-        output: "[1,2]",
-        explanation: "Because nums[1] + nums[2] == 6, we return [1, 2]."
-      }
-    ],
-    approach: "The best approach for this problem is to use a hash map to keep track of the numbers we've seen so far and their indices. For each number in the array, we check if the target minus the current number exists in the hash map. If it does, we return the indices of the two numbers. If not, we add the current number and its index to the hash map.",
-    solution: `function twoSum(nums, target) {
-  const map = new Map();
-  
-  for (let i = 0; i < nums.length; i++) {
-    const complement = target - nums[i];
-    
-    if (map.has(complement)) {
-      return [map.get(complement), i];
-    }
-    
-    map.set(nums[i], i);
-  }
-  
-  return [];
-}`,
-    complexity: {
-      time: "O(n) where n is the length of the array.",
-      space: "O(n) for the hash map."
-    },
-    topics: ["Arrays", "Hash Table"],
-    completed: true,
-    notes: "Remember that the key insight here is that we only need to scan the array once, using the hash map to check if the complement exists."
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    // In a real app, you might want to show a toast notification here
   };
+
+  if (!question) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-1 max-w-7xl w-full mx-auto pt-20 px-4 md:px-8 pb-8">
+          <div className="text-center p-10">
+            <h2 className="text-2xl">Question not found</h2>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -98,6 +79,9 @@ const Question = () => {
             <TabsList className="glass w-full justify-start">
               <TabsTrigger value="description">Description</TabsTrigger>
               <TabsTrigger value="solution">Solution</TabsTrigger>
+              {question.answer && (
+                <TabsTrigger value="answer">My Answer</TabsTrigger>
+              )}
               <TabsTrigger value="notes">Notes</TabsTrigger>
             </TabsList>
             
@@ -128,29 +112,79 @@ const Question = () => {
               <Card className="glass-card">
                 <CardContent className="pt-6">
                   <div className="prose dark:prose-invert max-w-none space-y-4">
-                    <h3 className="text-lg font-semibold">Approach</h3>
-                    <p>{question.approach}</p>
-                    
-                    <h3 className="text-lg font-semibold">Solution Code</h3>
-                    <pre className="bg-secondary/30 p-3 rounded-md overflow-auto text-sm">
-                      <code>{question.solution}</code>
-                    </pre>
-                    
-                    <h3 className="text-lg font-semibold">Complexity Analysis</h3>
-                    <ul>
-                      <li><strong>Time Complexity:</strong> {question.complexity.time}</li>
-                      <li><strong>Space Complexity:</strong> {question.complexity.space}</li>
-                    </ul>
+                    {question.approaches.map((approach, index) => (
+                      <div key={index} className="mb-8">
+                        <h3 className="text-lg font-semibold">{approach.name}</h3>
+                        <p>{approach.description}</p>
+                        
+                        <h4 className="text-md font-semibold mt-4">Solution Code</h4>
+                        <div className="relative">
+                          <div className="absolute top-2 right-2">
+                            <Button 
+                              size="sm" 
+                              variant="ghost" 
+                              onClick={() => copyToClipboard(approach.solution)}
+                              className="h-7 w-7 p-0"
+                            >
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                          </div>
+                          <pre className="bg-secondary/30 p-3 rounded-md overflow-auto text-sm">
+                            <code>{approach.solution}</code>
+                          </pre>
+                        </div>
+                        
+                        <h4 className="text-md font-semibold mt-4">Complexity Analysis</h4>
+                        <ul>
+                          <li><strong>Time Complexity:</strong> {approach.complexity.time}</li>
+                          <li><strong>Space Complexity:</strong> {approach.complexity.space}</li>
+                        </ul>
+                      </div>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
             </TabsContent>
+
+            {question.answer && (
+              <TabsContent value="answer" className="mt-4">
+                <Card className="glass-card">
+                  <CardContent className="pt-6">
+                    <div className="prose dark:prose-invert max-w-none space-y-4">
+                      <h3 className="text-lg font-semibold">My Solution</h3>
+                      <p className="whitespace-pre-line">{question.answer.explanation}</p>
+                      
+                      {question.answer.code && (
+                        <>
+                          <h4 className="text-md font-semibold mt-4">Code Implementation</h4>
+                          <div className="relative">
+                            <div className="absolute top-2 right-2">
+                              <Button 
+                                size="sm" 
+                                variant="ghost" 
+                                onClick={() => copyToClipboard(question.answer.code)}
+                                className="h-7 w-7 p-0"
+                              >
+                                <Copy className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <pre className="bg-secondary/30 p-3 rounded-md overflow-auto text-sm">
+                              <code>{question.answer.code}</code>
+                            </pre>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            )}
             
             <TabsContent value="notes" className="mt-4">
               <Card className="glass-card">
                 <CardContent className="pt-6">
                   <div className="prose dark:prose-invert max-w-none">
-                    <p>{question.notes || "No notes added yet. Add your thoughts and learning here."}</p>
+                    <p>{"No notes added yet. Add your thoughts and learning here."}</p>
                   </div>
                 </CardContent>
               </Card>
