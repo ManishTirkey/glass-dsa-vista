@@ -102,12 +102,12 @@ const QuestionDetail: React.FC<QuestionDetailProps> = ({ question }) => {
               <AccordionTrigger className="flex items-center">
                 <div className="flex gap-2 items-center">
                   <Code className="h-4 w-4" />
-                  <span>Answer</span>
+                  <span>C++ Solution</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-lg">Answer</h3>
+                  <h3 className="font-semibold text-lg">C++ Answer</h3>
                   <p className="whitespace-pre-line">{question.answer.explanation}</p>
                   
                   {question.answer.code && (

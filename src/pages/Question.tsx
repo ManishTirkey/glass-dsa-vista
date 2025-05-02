@@ -80,7 +80,7 @@ const Question = () => {
               <TabsTrigger value="description">Description</TabsTrigger>
               <TabsTrigger value="solution">Solution</TabsTrigger>
               {question.answer && (
-                <TabsTrigger value="answer">My Answer</TabsTrigger>
+                <TabsTrigger value="answer">My C++ Solution</TabsTrigger>
               )}
               <TabsTrigger value="notes">Notes</TabsTrigger>
             </TabsList>
@@ -117,7 +117,7 @@ const Question = () => {
                         <h3 className="text-lg font-semibold">{approach.name}</h3>
                         <p>{approach.description}</p>
                         
-                        <h4 className="text-md font-semibold mt-4">Solution Code</h4>
+                        <h4 className="text-md font-semibold mt-4">Solution Code (C++)</h4>
                         <div className="relative">
                           <div className="absolute top-2 right-2">
                             <Button 
@@ -151,12 +151,12 @@ const Question = () => {
                 <Card className="glass-card">
                   <CardContent className="pt-6">
                     <div className="prose dark:prose-invert max-w-none space-y-4">
-                      <h3 className="text-lg font-semibold">My Solution</h3>
+                      <h3 className="text-lg font-semibold">My C++ Solution</h3>
                       <p className="whitespace-pre-line">{question.answer.explanation}</p>
                       
                       {question.answer.code && (
                         <>
-                          <h4 className="text-md font-semibold mt-4">Code Implementation</h4>
+                          <h4 className="text-md font-semibold mt-4">Code Implementation (C++)</h4>
                           <div className="relative">
                             <div className="absolute top-2 right-2">
                               <Button 
