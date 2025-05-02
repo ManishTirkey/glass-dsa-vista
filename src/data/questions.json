@@ -77,6 +77,482 @@
         }
       }
     ],
-    "completed": false
+    "completed": false,
+    "answer": {
+      "code": "/**\n * @param {string} s\n * @return {boolean}\n */\nfunction isValid(s) {\n  // Edge case: empty string is considered valid\n  if (s.length === 0) return true;\n  \n  // Edge case: odd length strings can't be valid as brackets come in pairs\n  if (s.length % 2 !== 0) return false;\n  \n  // Map opening brackets to their corresponding closing brackets\n  const bracketPairs = {\n    '(': ')',\n    '[': ']',\n    '{': '}'\n  };\n  \n  const stack = [];\n  \n  for (let char of s) {\n    // If it's an opening bracket, push to stack\n    if (bracketPairs[char]) {\n      stack.push(char);\n    } else {\n      // If it's a closing bracket\n      // First check if stack is empty (no matching opening bracket)\n      if (stack.length === 0) return false;\n      \n      // Get the last opening bracket\n      const lastBracket = stack.pop();\n      \n      // Check if the closing bracket matches the last opening bracket\n      if (bracketPairs[lastBracket] !== char) return false;\n    }\n  }\n  \n  // Valid only if all brackets were matched (stack is empty)\n  return stack.length === 0;\n}",
+      "explanation": "To solve this problem, I used a stack data structure which is perfect for tracking the most recent opening brackets. The algorithm works by iterating through each character in the string.\n\nIf we encounter an opening bracket ('(', '[', or '{'), we push it onto our stack. If we encounter a closing bracket (')', ']', or '}'), we check if it matches the most recently seen opening bracket by popping the stack. If it doesn't match or if the stack is empty when we see a closing bracket, we know the string is invalid.\n\nAfter processing the entire string, we also need to make sure the stack is empty. If there are any remaining opening brackets without matching closing brackets, the string is invalid.\n\nThe solution is efficient with O(n) time complexity where n is the length of the string, and O(n) space complexity for the stack in the worst case."
+    }
+  },
+  {
+    "id": "3",
+    "title": "Maximum Subarray",
+    "difficulty": "Medium",
+    "topics": ["Array", "Divide and Conquer", "Dynamic Programming"],
+    "shortDescription": "Find the contiguous subarray with the largest sum.",
+    "description": "Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.",
+    "examples": [
+      {
+        "input": "nums = [-2,1,-3,4,-1,2,1,-5,4]",
+        "output": "6",
+        "explanation": "The subarray [4,-1,2,1] has the largest sum 6."
+      },
+      {
+        "input": "nums = [1]",
+        "output": "1"
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Kadane's Algorithm",
+        "description": "Use dynamic programming to keep track of the maximum sum ending at each position.",
+        "solution": "function maxSubArray(nums) {\n  let currentSum = nums[0];\n  let maxSum = nums[0];\n  \n  for (let i = 1; i < nums.length; i++) {\n    currentSum = Math.max(nums[i], currentSum + nums[i]);\n    maxSum = Math.max(maxSum, currentSum);\n  }\n  \n  return maxSum;\n}",
+        "complexity": {
+          "time": "O(n) where n is the length of the array.",
+          "space": "O(1), constant space."
+        }
+      }
+    ],
+    "completed": false,
+    "answer": {
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nfunction maxSubArray(nums) {\n  // Handle edge case of empty array\n  if (nums.length === 0) return 0;\n  \n  // Initialize our variables with the first element\n  let currentSum = nums[0];\n  let maxSum = nums[0];\n  \n  // Start from the second element (if it exists)\n  for (let i = 1; i < nums.length; i++) {\n    // For each element, we have two choices:\n    // 1. Add it to our current subarray\n    // 2. Start a new subarray beginning with this element\n    // We choose whichever gives a larger sum\n    currentSum = Math.max(nums[i], currentSum + nums[i]);\n    \n    // Update the maximum sum we've seen so far\n    maxSum = Math.max(maxSum, currentSum);\n  }\n  \n  return maxSum;\n}",
+      "explanation": "I approached this problem using Kadane's algorithm, which is an elegant dynamic programming solution. The core insight is that at each position, we have two options: either start a new subarray at the current position, or extend the existing subarray by including the current element.\n\nFor each element in the array, we calculate the maximum subarray sum ending at that position by taking the maximum of:\n1. The current element by itself (starting a new subarray)\n2. The previous maximum subarray sum plus the current element (extending the existing subarray)\n\nWe keep track of the global maximum sum we've seen so far. This approach is optimal because it only requires a single pass through the array and uses constant extra space.\n\nTime complexity: O(n) where n is the length of the array\nSpace complexity: O(1) as we only need two variables regardless of input size"
+    }
+  },
+  {
+    "id": "4",
+    "title": "Merge Two Sorted Lists",
+    "difficulty": "Easy",
+    "topics": ["Linked List", "Recursion"],
+    "shortDescription": "Merge two sorted linked lists into one sorted list.",
+    "description": "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists. Return the head of the merged linked list.",
+    "examples": [
+      {
+        "input": "list1 = [1,2,4], list2 = [1,3,4]",
+        "output": "[1,1,2,3,4,4]"
+      },
+      {
+        "input": "list1 = [], list2 = []",
+        "output": "[]"
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Iterative",
+        "description": "Create a dummy head and iterate through both lists, choosing the smaller value to add to the result.",
+        "solution": "function mergeTwoLists(l1, l2) {\n  const dummy = new ListNode(-1);\n  let current = dummy;\n  \n  while (l1 !== null && l2 !== null) {\n    if (l1.val < l2.val) {\n      current.next = l1;\n      l1 = l1.next;\n    } else {\n      current.next = l2;\n      l2 = l2.next;\n    }\n    current = current.next;\n  }\n  \n  // Attach remaining nodes from either list\n  current.next = l1 === null ? l2 : l1;\n  \n  return dummy.next;\n}",
+        "complexity": {
+          "time": "O(n+m) where n and m are the lengths of the two lists.",
+          "space": "O(1) because we only use a constant amount of extra space."
+        }
+      },
+      {
+        "name": "Recursive",
+        "description": "Use recursion to determine which list node to take and construct the merged list.",
+        "solution": "function mergeTwoLists(l1, l2) {\n  if (l1 === null) return l2;\n  if (l2 === null) return l1;\n  \n  if (l1.val < l2.val) {\n    l1.next = mergeTwoLists(l1.next, l2);\n    return l1;\n  } else {\n    l2.next = mergeTwoLists(l1, l2.next);\n    return l2;\n  }\n}",
+        "complexity": {
+          "time": "O(n+m) where n and m are the lengths of the two lists.",
+          "space": "O(n+m) for the recursion stack in worst case."
+        }
+      }
+    ],
+    "completed": false,
+    "answer": {
+      "code": "/**\n * Definition for singly-linked list.\n * function ListNode(val, next) {\n *     this.val = (val===undefined ? 0 : val)\n *     this.next = (next===undefined ? null : next)\n * }\n */\n/**\n * @param {ListNode} list1\n * @param {ListNode} list2\n * @return {ListNode}\n */\nfunction mergeTwoLists(list1, list2) {\n  // Create a dummy head to simplify edge cases\n  const dummy = new ListNode(-1);\n  let current = dummy;\n  \n  // Traverse both lists and compare nodes\n  while (list1 !== null && list2 !== null) {\n    // Choose the node with the smaller value\n    if (list1.val <= list2.val) {\n      current.next = list1;\n      list1 = list1.next;\n    } else {\n      current.next = list2;\n      list2 = list2.next;\n    }\n    \n    // Move the pointer forward\n    current = current.next;\n  }\n  \n  // If one list is longer than the other, append the remaining nodes\n  current.next = list1 === null ? list2 : list1;\n  \n  // Return the head of the merged list (skip dummy node)\n  return dummy.next;\n}",
+      "explanation": "I approached this problem using an iterative solution with a dummy head to simplify edge cases. The key insight is that we can build the merged list by comparing the current nodes of both lists and always choosing the smaller value.\n\nThe algorithm works by:\n1. Creating a dummy node to serve as the starting point of our result list\n2. Maintaining a current pointer that tracks where we should add the next node\n3. Comparing the values of the current nodes in both input lists\n4. Attaching the node with the smaller value to our result list\n5. Advancing the pointer in the list that contributed the node\n6. After one list is exhausted, attaching the remainder of the other list\n\nThis approach is efficient with O(n+m) time complexity where n and m are the lengths of the input lists. The space complexity is O(1) since we're reusing the nodes from the input lists rather than creating new ones."
+    }
+  },
+  {
+    "id": "5",
+    "title": "Best Time to Buy and Sell Stock",
+    "difficulty": "Easy",
+    "topics": ["Array", "Dynamic Programming"],
+    "shortDescription": "Find the maximum profit from buying and selling a stock once.",
+    "description": "You are given an array prices where prices[i] is the price of a given stock on the ith day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.",
+    "examples": [
+      {
+        "input": "prices = [7,1,5,3,6,4]",
+        "output": "5",
+        "explanation": "Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5."
+      }
+    ],
+    "approaches": [
+      {
+        "name": "One Pass",
+        "description": "Keep track of the minimum price seen so far and calculate the maximum profit that can be achieved.",
+        "solution": "function maxProfit(prices) {\n  let minPrice = Infinity;\n  let maxProfit = 0;\n  \n  for (let i = 0; i < prices.length; i++) {\n    if (prices[i] < minPrice) {\n      minPrice = prices[i];\n    } else if (prices[i] - minPrice > maxProfit) {\n      maxProfit = prices[i] - minPrice;\n    }\n  }\n  \n  return maxProfit;\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of prices.",
+          "space": "O(1), constant space."
+        }
+      }
+    ],
+    "completed": false,
+    "answer": {
+      "code": "/**\n * @param {number[]} prices\n * @return {number}\n */\nfunction maxProfit(prices) {\n  // Edge case: empty array or single price\n  if (prices.length <= 1) return 0;\n  \n  let minPrice = prices[0];\n  let maxProfit = 0;\n  \n  for (let i = 1; i < prices.length; i++) {\n    // If current price is lower than min price seen so far, update min price\n    // This represents a better day to buy\n    if (prices[i] < minPrice) {\n      minPrice = prices[i];\n    } \n    // If selling at today's price would give better profit, update max profit\n    else if (prices[i] - minPrice > maxProfit) {\n      maxProfit = prices[i] - minPrice;\n    }\n  }\n  \n  return maxProfit;\n}",
+      "explanation": "I tackled this problem with a single-pass approach that tracks two key variables: the minimum stock price we've seen so far and the maximum profit we could make.\n\nThe insight is that to maximize profit, we want to buy at the lowest price and sell at the highest price afterward. As we scan through the array, we continuously update:\n\n1. The minimum price we've seen so far (potential buying point)\n2. The maximum profit we can make by selling at the current price\n\nThis approach is elegant because we don't need to try all possible buy-sell combinations. At each step, we either find a better day to buy (lower price) or calculate if selling today would give us more profit than our best-known profit.\n\nThe time complexity is O(n) where n is the number of prices, as we only need to scan the array once. The space complexity is O(1) since we only use two variables regardless of input size."
+    }
+  },
+  {
+    "id": "6",
+    "title": "Valid Palindrome",
+    "difficulty": "Easy",
+    "topics": ["String", "Two Pointers"],
+    "shortDescription": "Determine if a string is a palindrome ignoring non-alphanumeric characters.",
+    "description": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.",
+    "examples": [
+      {
+        "input": "s = \"A man, a plan, a canal: Panama\"",
+        "output": "true",
+        "explanation": "\"amanaplanacanalpanama\" is a palindrome."
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Two Pointers",
+        "description": "Use two pointers at the start and end of the string and move them towards the center, comparing characters.",
+        "solution": "function isPalindrome(s) {\n  const cleanString = s.toLowerCase().replace(/[^a-z0-9]/g, '');\n  \n  let left = 0;\n  let right = cleanString.length - 1;\n  \n  while (left < right) {\n    if (cleanString[left] !== cleanString[right]) {\n      return false;\n    }\n    left++;\n    right--;\n  }\n  \n  return true;\n}",
+        "complexity": {
+          "time": "O(n) where n is the length of the string.",
+          "space": "O(n) for creating the cleaned string."
+        }
+      }
+    ],
+    "completed": true,
+    "answer": {
+      "code": "/**\n * @param {string} s\n * @return {boolean}\n */\nfunction isPalindrome(s) {\n  // Convert to lowercase and remove non-alphanumeric characters\n  const clean = s.toLowerCase().replace(/[^a-z0-9]/g, '');\n  \n  // Edge case: empty string is a palindrome\n  if (clean.length === 0) return true;\n  \n  // Check if the string is equal to its reverse\n  for (let i = 0; i < Math.floor(clean.length / 2); i++) {\n    if (clean[i] !== clean[clean.length - 1 - i]) {\n      return false;\n    }\n  }\n  \n  return true;\n}",
+      "explanation": "I solved this problem by first cleaning the string: converting it to lowercase and removing all non-alphanumeric characters using a regular expression. This handles the requirement to ignore case and special characters.\n\nAfter cleaning, I implemented a straightforward check for palindrome properties using the two-pointer technique. I iterate through half the string, comparing characters from the beginning and end, moving inward. If at any point the characters don't match, the string is not a palindrome.\n\nA more concise solution could use string reversal (like `clean === clean.split('').reverse().join('')`), but the two-pointer approach is more efficient as it can return early when a mismatch is found.\n\nThe time complexity is O(n) where n is the length of the string - we need to process each character once. The space complexity is also O(n) for storing the cleaned string."
+    }
+  },
+  {
+    "id": "7",
+    "title": "Invert Binary Tree",
+    "difficulty": "Easy",
+    "topics": ["Tree", "Depth-First Search", "Breadth-First Search", "Binary Tree"],
+    "shortDescription": "Invert a binary tree (swap left and right children).",
+    "description": "Given the root of a binary tree, invert the tree, and return its root. Inverting a binary tree means swapping the left and right children of all nodes.",
+    "examples": [
+      {
+        "input": "root = [4,2,7,1,3,6,9]",
+        "output": "[4,7,2,9,6,3,1]"
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Recursive",
+        "description": "Recursively invert the left and right subtrees and swap them.",
+        "solution": "function invertTree(root) {\n  if (root === null) return null;\n  \n  const left = invertTree(root.left);\n  const right = invertTree(root.right);\n  \n  root.left = right;\n  root.right = left;\n  \n  return root;\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of nodes in the tree.",
+          "space": "O(h) where h is the height of the tree for the recursion stack."
+        }
+      },
+      {
+        "name": "Iterative (BFS)",
+        "description": "Use a queue to perform level-order traversal and invert each node's children.",
+        "solution": "function invertTree(root) {\n  if (root === null) return null;\n  \n  const queue = [root];\n  \n  while (queue.length > 0) {\n    const node = queue.shift();\n    \n    // Swap children\n    const temp = node.left;\n    node.left = node.right;\n    node.right = temp;\n    \n    if (node.left) queue.push(node.left);\n    if (node.right) queue.push(node.right);\n  }\n  \n  return root;\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of nodes in the tree.",
+          "space": "O(n) in worst case for the queue."
+        }
+      }
+    ],
+    "completed": false,
+    "answer": {
+      "code": "/**\n * Definition for a binary tree node.\n * function TreeNode(val, left, right) {\n *     this.val = (val===undefined ? 0 : val)\n *     this.left = (left===undefined ? null : left)\n *     this.right = (right===undefined ? null : right)\n * }\n */\n/**\n * @param {TreeNode} root\n * @return {TreeNode}\n */\nfunction invertTree(root) {\n  // Base case: if the tree is empty or we're at a leaf\n  if (root === null) return null;\n  \n  // Swap the children\n  const temp = root.left;\n  root.left = root.right;\n  root.right = temp;\n  \n  // Recursively invert the subtrees\n  invertTree(root.left);\n  invertTree(root.right);\n  \n  // Return the inverted tree\n  return root;\n}",
+      "explanation": "For this problem, I chose a recursive approach because the structure of binary trees naturally lends itself to recursion. The idea is elegant in its simplicity: for each node, we swap its left and right children, then recursively apply the same operation to both subtrees.\n\nThe recursive algorithm works as follows:\n1. Handle the base case: if the current node is null, return null\n2. Swap the left and right children of the current node\n3. Recursively invert the left subtree\n4. Recursively invert the right subtree\n5. Return the root of the inverted tree\n\nThis approach traverses each node exactly once, giving us a time complexity of O(n) where n is the number of nodes in the tree. The space complexity is O(h) where h is the height of the tree, due to the recursion stack. In the worst case of a skewed tree, this could be O(n), but for a balanced tree, it would be O(log n)."
+    }
+  },
+  {
+    "id": "8",
+    "title": "Linked List Cycle",
+    "difficulty": "Easy",
+    "topics": ["Hash Table", "Linked List", "Two Pointers"],
+    "shortDescription": "Determine if a linked list has a cycle.",
+    "description": "Given head, the head of a linked list, determine if the linked list has a cycle in it. There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer.",
+    "examples": [
+      {
+        "input": "head = [3,2,0,-4], pos = 1",
+        "output": "true",
+        "explanation": "There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed)."
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Floyd's Cycle-Finding Algorithm (Tortoise and Hare)",
+        "description": "Use two pointers moving at different speeds. If there's a cycle, they will eventually meet.",
+        "solution": "function hasCycle(head) {\n  if (!head || !head.next) return false;\n  \n  let slow = head;\n  let fast = head;\n  \n  while (fast && fast.next) {\n    slow = slow.next;        // Move slow pointer by 1\n    fast = fast.next.next;   // Move fast pointer by 2\n    \n    if (slow === fast) return true;  // If they meet, there's a cycle\n  }\n  \n  return false;  // If fast reaches the end, no cycle\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of nodes in the list.",
+          "space": "O(1), constant space."
+        }
+      },
+      {
+        "name": "Hash Set",
+        "description": "Store visited nodes in a hash set and check if a node has been visited before.",
+        "solution": "function hasCycle(head) {\n  const visited = new Set();\n  \n  let current = head;\n  while (current) {\n    if (visited.has(current)) {\n      return true;  // Found a cycle\n    }\n    \n    visited.add(current);\n    current = current.next;\n  }\n  \n  return false;  // No cycle found\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of nodes in the list.",
+          "space": "O(n) for storing the visited nodes."
+        }
+      }
+    ],
+    "completed": false,
+    "answer": {
+      "code": "/**\n * Definition for singly-linked list.\n * function ListNode(val) {\n *     this.val = val;\n *     this.next = null;\n * }\n */\n/**\n * @param {ListNode} head\n * @return {boolean}\n */\nfunction hasCycle(head) {\n  // Edge case: empty list or single node cannot have a cycle\n  if (!head || !head.next) return false;\n  \n  // Initialize two pointers - slow moves by 1, fast moves by 2\n  let slow = head;\n  let fast = head;\n  \n  // Keep moving until fast reaches the end\n  while (fast && fast.next) {\n    // Move slow one step\n    slow = slow.next;\n    // Move fast two steps\n    fast = fast.next.next;\n    \n    // If they meet, there's a cycle\n    if (slow === fast) {\n      return true;\n    }\n  }\n  \n  // If fast pointer reached the end, there's no cycle\n  return false;\n}",
+      "explanation": "I implemented Floyd's Cycle-Finding Algorithm (also known as the \"tortoise and hare\" algorithm) to detect cycles in the linked list. The beauty of this approach is that it uses only constant extra space regardless of the list size.\n\nThe algorithm works by using two pointers that move at different speeds:\n\n1. The slow pointer (tortoise) moves one node at a time\n2. The fast pointer (hare) moves two nodes at a time\n\nIf there's a cycle in the list, the fast pointer will eventually catch up to the slow pointer, and they'll meet at some point within the cycle. If there's no cycle, the fast pointer will reach the end of the list.\n\nThis approach has a time complexity of O(n), where n is the number of nodes in the list. In the worst case, the slow pointer will need to travel through the non-cyclic part of the list plus one loop around the cycle before meeting the fast pointer. The space complexity is O(1) as we only need two pointers regardless of the list size."
+    }
+  },
+  {
+    "id": "9",
+    "title": "Climbing Stairs",
+    "difficulty": "Easy",
+    "topics": ["Math", "Dynamic Programming", "Memoization"],
+    "shortDescription": "Count the ways to climb n stairs taking 1 or 2 steps at a time.",
+    "description": "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
+    "examples": [
+      {
+        "input": "n = 2",
+        "output": "2",
+        "explanation": "There are two ways: 1+1 and 2."
+      },
+      {
+        "input": "n = 3",
+        "output": "3",
+        "explanation": "There are three ways: 1+1+1, 1+2, and 2+1."
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Dynamic Programming",
+        "description": "Use DP to build up the solution based on the Fibonacci sequence pattern.",
+        "solution": "function climbStairs(n) {\n  if (n <= 2) return n;\n  \n  const dp = new Array(n + 1);\n  dp[1] = 1;\n  dp[2] = 2;\n  \n  for (let i = 3; i <= n; i++) {\n    dp[i] = dp[i-1] + dp[i-2];\n  }\n  \n  return dp[n];\n}",
+        "complexity": {
+          "time": "O(n) as we calculate each step once.",
+          "space": "O(n) for the DP array."
+        }
+      },
+      {
+        "name": "Fibonacci Optimized",
+        "description": "Since we only need the last two results, we can use constant space.",
+        "solution": "function climbStairs(n) {\n  if (n <= 2) return n;\n  \n  let prev1 = 1;  // Ways to climb 1 step\n  let prev2 = 2;  // Ways to climb 2 steps\n  \n  for (let i = 3; i <= n; i++) {\n    const current = prev1 + prev2;\n    prev1 = prev2;\n    prev2 = current;\n  }\n  \n  return prev2;\n}",
+        "complexity": {
+          "time": "O(n) as we still calculate each step once.",
+          "space": "O(1) as we only keep track of two variables."
+        }
+      }
+    ],
+    "completed": true,
+    "answer": {
+      "code": "/**\n * @param {number} n\n * @return {number}\n */\nfunction climbStairs(n) {\n  // Base cases\n  if (n <= 0) return 0;\n  if (n === 1) return 1;\n  if (n === 2) return 2;\n  \n  // Use optimized space complexity approach\n  let oneStepBefore = 2;  // Ways to climb n-1 stairs\n  let twoStepsBefore = 1; // Ways to climb n-2 stairs\n  let allWays = 0;\n  \n  // Starting from step 3, build up the solution\n  for (let i = 3; i <= n; i++) {\n    // Ways to reach current step = ways to reach from one step before + ways to reach from two steps before\n    allWays = oneStepBefore + twoStepsBefore;\n    \n    // Update for the next iteration\n    twoStepsBefore = oneStepBefore;\n    oneStepBefore = allWays;\n  }\n  \n  return allWays;\n}",
+      "explanation": "This problem is a classic example of dynamic programming and follows the Fibonacci sequence pattern. The key insight is that to reach step n, you can either take a single step from step n-1 or take a double step from step n-2.\n\nThus, the total number of ways to reach step n is the sum of the ways to reach step n-1 and the ways to reach step n-2.\n\nI implemented the solution using an optimized approach that uses constant space. Instead of storing all intermediate results in an array, we only need to keep track of the previous two values at any point.\n\nThe algorithm works as follows:\n1. Handle the base cases (n ≤ 2)\n2. Initialize variables to track ways to reach one and two steps before the current step\n3. Iterate from step 3 to n, calculating the number of ways at each step\n4. For each step, the number of ways equals the sum of ways for the previous two steps\n\nTime complexity: O(n) as we need to calculate the result for each step from 3 to n\nSpace complexity: O(1) as we only use three variables regardless of input size"
+    }
+  },
+  {
+    "id": "10",
+    "title": "Same Tree",
+    "difficulty": "Easy",
+    "topics": ["Tree", "Depth-First Search", "Breadth-First Search", "Binary Tree"],
+    "shortDescription": "Check if two binary trees are identical.",
+    "description": "Given the roots of two binary trees p and q, write a function to check if they are the same or not. Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.",
+    "examples": [
+      {
+        "input": "p = [1,2,3], q = [1,2,3]",
+        "output": "true"
+      },
+      {
+        "input": "p = [1,2], q = [1,null,2]",
+        "output": "false"
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Recursive",
+        "description": "Compare the nodes recursively, checking values and structure.",
+        "solution": "function isSameTree(p, q) {\n  // If both trees are empty\n  if (p === null && q === null) return true;\n  \n  // If one tree is empty but the other is not\n  if (p === null || q === null) return false;\n  \n  // Check current nodes and recursively check subtrees\n  return p.val === q.val && \n         isSameTree(p.left, q.left) && \n         isSameTree(p.right, q.right);\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of nodes in the tree.",
+          "space": "O(h) where h is the height of the tree for the recursion stack."
+        }
+      },
+      {
+        "name": "Iterative (BFS)",
+        "description": "Use a queue to perform level-order traversal and compare nodes at each step.",
+        "solution": "function isSameTree(p, q) {\n  const queue = [[p, q]];\n  \n  while (queue.length > 0) {\n    const [node1, node2] = queue.shift();\n    \n    // If both null, continue to next pair\n    if (node1 === null && node2 === null) continue;\n    \n    // If one is null or values are different\n    if (node1 === null || node2 === null || node1.val !== node2.val) {\n      return false;\n    }\n    \n    // Push children pairs to queue\n    queue.push([node1.left, node2.left]);\n    queue.push([node1.right, node2.right]);\n  }\n  \n  return true;\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of nodes in the tree.",
+          "space": "O(n) in worst case for the queue."
+        }
+      }
+    ],
+    "completed": false,
+    "answer": {
+      "code": "/**\n * Definition for a binary tree node.\n * function TreeNode(val, left, right) {\n *     this.val = (val===undefined ? 0 : val)\n *     this.left = (left===undefined ? null : left)\n *     this.right = (right===undefined ? null : right)\n * }\n */\n/**\n * @param {TreeNode} p\n * @param {TreeNode} q\n * @return {boolean}\n */\nfunction isSameTree(p, q) {\n  // Base case 1: both trees are empty\n  if (p === null && q === null) {\n    return true;\n  }\n  \n  // Base case 2: one tree is empty but the other is not\n  if (p === null || q === null) {\n    return false;\n  }\n  \n  // Check if current nodes have the same value\n  if (p.val !== q.val) {\n    return false;\n  }\n  \n  // Recursively check both left and right subtrees\n  return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);\n}",
+      "explanation": "I chose the recursive approach for this problem because it elegantly captures the definition of two trees being the same: they must have identical structure and node values.\n\nThe algorithm checks three conditions:\n\n1. If both trees are null, they're the same (empty trees are identical)\n2. If one tree is null but the other isn't, they can't be the same\n3. If the current nodes have different values, the trees aren't the same\n\nIf all these checks pass, we recursively verify that both the left subtrees are identical and the right subtrees are identical.\n\nThe time complexity is O(n) where n is the number of nodes in the smaller tree, as we need to check each node at most once. The space complexity is O(h) where h is the height of the tree, due to the recursive call stack. In the worst case of a skewed tree, this could be O(n), but for a balanced tree it would be O(log n)."
+    }
+  },
+  {
+    "id": "11",
+    "title": "Symmetric Tree",
+    "difficulty": "Easy",
+    "topics": ["Tree", "Depth-First Search", "Breadth-First Search", "Binary Tree"],
+    "shortDescription": "Check if a binary tree is a mirror of itself.",
+    "description": "Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).",
+    "examples": [
+      {
+        "input": "root = [1,2,2,3,4,4,3]",
+        "output": "true"
+      },
+      {
+        "input": "root = [1,2,2,null,3,null,3]",
+        "output": "false"
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Recursive",
+        "description": "Compare the left subtree with the right subtree in a mirrored fashion.",
+        "solution": "function isSymmetric(root) {\n  if (root === null) return true;\n  \n  // Helper function to check if two subtrees are mirrors\n  function isMirror(left, right) {\n    // If both null, they are mirrors\n    if (left === null && right === null) return true;\n    \n    // If one is null or values different, not mirrors\n    if (left === null || right === null || left.val !== right.val) {\n      return false;\n    }\n    \n    // Check outer and inner pairs\n    return isMirror(left.left, right.right) && \n           isMirror(left.right, right.left);\n  }\n  \n  return isMirror(root.left, root.right);\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of nodes in the tree.",
+          "space": "O(h) where h is the height of the tree for recursion stack."
+        }
+      },
+      {
+        "name": "Iterative",
+        "description": "Use a queue to compare mirrored pairs of nodes level by level.",
+        "solution": "function isSymmetric(root) {\n  if (root === null) return true;\n  \n  const queue = [[root.left, root.right]];\n  \n  while (queue.length > 0) {\n    const [left, right] = queue.shift();\n    \n    // If both null, continue\n    if (left === null && right === null) continue;\n    \n    // If one is null or values different\n    if (left === null || right === null || left.val !== right.val) {\n      return false;\n    }\n    \n    // Add mirrored pairs to queue\n    queue.push([left.left, right.right]);\n    queue.push([left.right, right.left]);\n  }\n  \n  return true;\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of nodes in the tree.",
+          "space": "O(n) in worst case for the queue."
+        }
+      }
+    ],
+    "completed": false,
+    "answer": {
+      "code": "/**\n * Definition for a binary tree node.\n * function TreeNode(val, left, right) {\n *     this.val = (val===undefined ? 0 : val)\n *     this.left = (left===undefined ? null : left)\n *     this.right = (right===undefined ? null : right)\n * }\n */\n/**\n * @param {TreeNode} root\n * @return {boolean}\n */\nfunction isSymmetric(root) {\n  // Empty tree is symmetric\n  if (!root) return true;\n  \n  // Helper function to check if two subtrees are mirrors of each other\n  function isMirror(leftSubtree, rightSubtree) {\n    // If both subtrees are empty, they're symmetric\n    if (!leftSubtree && !rightSubtree) return true;\n    \n    // If only one subtree is empty, they're not symmetric\n    if (!leftSubtree || !rightSubtree) return false;\n    \n    // Check if current nodes have same value and their subtrees are mirrors\n    return (leftSubtree.val === rightSubtree.val) && \n           isMirror(leftSubtree.left, rightSubtree.right) && \n           isMirror(leftSubtree.right, rightSubtree.left);\n  }\n  \n  // Check if the left and right subtrees of the root are mirrors\n  return isMirror(root.left, root.right);\n}",
+      "explanation": "For this problem, I implemented a recursive solution that checks whether a tree is symmetric around its center. A tree is symmetric if the left subtree is a mirror reflection of the right subtree.\n\nThe algorithm uses a helper function `isMirror` that takes two subtrees and checks if they are mirror images of each other. Two trees are mirrors if:\n\n1. Their root values are the same\n2. The left subtree of the first tree is a mirror of the right subtree of the second tree\n3. The right subtree of the first tree is a mirror of the left subtree of the second tree\n\nI start by comparing the left and right subtrees of the root. The base cases handle empty trees: two empty trees are symmetric, and if only one tree is empty, they can't be symmetric.\n\nThe time complexity is O(n) where n is the number of nodes in the tree, as we need to visit each node once. The space complexity is O(h) where h is the height of the tree due to the recursion stack. For a balanced tree, this would be O(log n), and for a skewed tree, it could be O(n)."
+    }
+  },
+  {
+    "id": "12",
+    "title": "Maximum Depth of Binary Tree",
+    "difficulty": "Easy",
+    "topics": ["Tree", "Depth-First Search", "Breadth-First Search", "Binary Tree"],
+    "shortDescription": "Find the maximum depth (height) of a binary tree.",
+    "description": "Given the root of a binary tree, return its maximum depth. A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
+    "examples": [
+      {
+        "input": "root = [3,9,20,null,null,15,7]",
+        "output": "3"
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Recursive DFS",
+        "description": "Recursively calculate the maximum depth by finding the maximum depth of the left and right subtrees and adding 1.",
+        "solution": "function maxDepth(root) {\n  if (root === null) return 0;\n  \n  const leftDepth = maxDepth(root.left);\n  const rightDepth = maxDepth(root.right);\n  \n  return Math.max(leftDepth, rightDepth) + 1;\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of nodes in the tree.",
+          "space": "O(h) where h is the height of the tree for the recursion stack."
+        }
+      },
+      {
+        "name": "Iterative BFS",
+        "description": "Use level-order traversal to count the number of levels in the tree.",
+        "solution": "function maxDepth(root) {\n  if (root === null) return 0;\n  \n  const queue = [root];\n  let depth = 0;\n  \n  while (queue.length > 0) {\n    const levelSize = queue.length;\n    depth++;\n    \n    for (let i = 0; i < levelSize; i++) {\n      const node = queue.shift();\n      \n      if (node.left) queue.push(node.left);\n      if (node.right) queue.push(node.right);\n    }\n  }\n  \n  return depth;\n}",
+        "complexity": {
+          "time": "O(n) where n is the number of nodes in the tree.",
+          "space": "O(n) in worst case for the queue."
+        }
+      }
+    ],
+    "completed": false,
+    "answer": {
+      "code": "/**\n * Definition for a binary tree node.\n * function TreeNode(val, left, right) {\n *     this.val = (val===undefined ? 0 : val)\n *     this.left = (left===undefined ? null : left)\n *     this.right = (right===undefined ? null : right)\n * }\n */\n/**\n * @param {TreeNode} root\n * @return {number}\n */\nfunction maxDepth(root) {\n  // Base case: empty tree has depth 0\n  if (root === null) return 0;\n  \n  // Recursively find the depth of left and right subtrees\n  const leftDepth = maxDepth(root.left);\n  const rightDepth = maxDepth(root.right);\n  \n  // The depth of the tree is the maximum of the depths of\n  // the left and right subtrees, plus 1 for the current node\n  return Math.max(leftDepth, rightDepth) + 1;\n}",
+      "explanation": "I chose the recursive depth-first search (DFS) approach for finding the maximum depth of a binary tree. This solution elegantly captures the definition of tree depth.\n\nThe algorithm works as follows:\n\n1. If the tree is empty (null), its depth is 0\n2. Otherwise, calculate the maximum depth of the left subtree\n3. Calculate the maximum depth of the right subtree\n4. Return the maximum of these two depths plus 1 (to account for the current level)\n\nThe recursive solution naturally traverses the tree in a depth-first manner, exploring each path to its leaves before backtracking.\n\nTime complexity: O(n) where n is the number of nodes in the tree, as we visit each node exactly once\nSpace complexity: O(h) where h is the height of the tree, for the recursion stack. In the worst case of a skewed tree, this could be O(n), but for a balanced tree, it would be O(log n)"
+    }
+  },
+  {
+    "id": "13",
+    "title": "Convert Sorted Array to Binary Search Tree",
+    "difficulty": "Easy",
+    "topics": ["Array", "Divide and Conquer", "Tree", "Binary Search Tree", "Binary Tree"],
+    "shortDescription": "Convert a sorted array to a height-balanced BST.",
+    "description": "Given an integer array nums where the elements are sorted in ascending order, convert it to a height-balanced binary search tree. A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.",
+    "examples": [
+      {
+        "input": "nums = [-10,-3,0,5,9]",
+        "output": "[0,-3,9,-10,null,5]",
+        "explanation": "One valid answer is [0,-3,9,-10,null,5], which represents the shown height balanced BST."
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Recursive (Divide and Conquer)",
+        "description": "Use the middle element as the root and recursively build the left and right subtrees.",
+        "solution": "function sortedArrayToBST(nums) {\n  if (nums.length === 0) return null;\n  \n  // Find the middle element\n  const mid = Math.floor(nums.length / 2);\n  \n  // Create the root node with the middle element\n  const root = new TreeNode(nums[mid]);\n  \n  // Recursively build left and right subtrees\n  root.left = sortedArrayToBST(nums.slice(0, mid));\n  root.right = sortedArrayToBST(nums.slice(mid + 1));\n  \n  return root;\n}",
+        "complexity": {
+          "time": "O(n) where n is the length of the array.",
+          "space": "O(log n) for the recursion stack."
+        }
+      },
+      {
+        "name": "Iterative",
+        "description": "Use a stack to simulate the recursion, tracking the range of array indices for each node.",
+        "solution": "function sortedArrayToBST(nums) {\n  if (nums.length === 0) return null;\n  \n  const stack = [{\n    start: 0,\n    end: nums.length - 1,\n    parent: null,\n    isLeft: false,\n    node: null\n  }];\n  \n  let root = null;\n  \n  while (stack.length > 0) {\n    const { start, end, parent, isLeft } = stack.pop();\n    \n    if (start <= end) {\n      const mid = Math.floor((start + end) / 2);\n      const node = new TreeNode(nums[mid]);\n      \n      if (parent === null) {\n        root = node;\n      } else if (isLeft) {\n        parent.left = node;\n      } else {\n        parent.right = node;\n      }\n      \n      // Push right child first (will be processed after left)\n      stack.push({ start: mid + 1, end, parent: node, isLeft: false });\n      // Push left child\n      stack.push({ start, end: mid - 1, parent: node, isLeft: true });\n    }\n  }\n  \n  return root;\n}",
+        "complexity": {
+          "time": "O(n) where n is the length of the array.",
+          "space": "O(log n) for the stack."
+        }
+      }
+    ],
+    "completed": false,
+    "answer": {
+      "code": "/**\n * Definition for a binary tree node.\n * function TreeNode(val, left, right) {\n *     this.val = (val===undefined ? 0 : val)\n *     this.left = (left===undefined ? null : left)\n *     this.right = (right===undefined ? null : right)\n * }\n */\n/**\n * @param {number[]} nums\n * @return {TreeNode}\n */\nfunction sortedArrayToBST(nums) {\n  // Helper function to build a BST from a subarray\n  function buildBST(left, right) {\n    // Base case: if the subarray is empty\n    if (left > right) return null;\n    \n    // Find the middle element to make it the root\n    const mid = Math.floor((left + right) / 2);\n    \n    // Create a new tree node with the middle element\n    const root = new TreeNode(nums[mid]);\n    \n    // Recursively build the left subtree with elements before mid\n    root.left = buildBST(left, mid - 1);\n    \n    // Recursively build the right subtree with elements after mid\n    root.right = buildBST(mid + 1, right);\n    \n    return root;\n  }\n  \n  // Start building the BST with the entire array\n  return buildBST(0, nums.length - 1);\n}",
+      "explanation": "I approached this problem using the recursive divide-and-conquer strategy, which is ideal for constructing a height-balanced binary search tree from a sorted array.\n\nThe key insight is that to create a height-balanced BST, we should choose the middle element of the array as the root. This ensures that the left and right subtrees have approximately the same number of nodes.\n\nThe algorithm works as follows:\n\n1. Find the middle element of the array and make it the root\n2. Recursively build the left subtree using the elements to the left of the middle\n3. Recursively build the right subtree using the elements to the right of the middle\n\nInstead of repeatedly slicing the array, which would add extra time complexity, I used a helper function that tracks the current subarray bounds with indices. This makes the solution more efficient.\n\nTime complexity: O(n) where n is the number of elements in the array, as we need to process each element exactly once\nSpace complexity: O(log n) for the recursion stack in a balanced tree, as the maximum depth of recursion is log n"
+    }
+  },
+  {
+    "id": "14",
+    "title": "Balanced Binary Tree",
+    "difficulty": "Easy",
+    "topics": ["Tree", "Depth-First Search", "Binary Tree"],
+    "shortDescription": "Determine if a binary tree is height-balanced.",
+    "description": "Given a binary tree, determine if it is height-balanced. A height-balanced binary tree is defined as a binary tree in which the left and right subtrees of every node differ in height by no more than 1.",
+    "examples": [
+      {
+        "input": "root = [3,9,20,null,null,15,7]",
+        "output": "true"
+      },
+      {
+        "input": "root = [1,2,2,3,3,null,null,4,4]",
+        "output": "false"
+      }
+    ],
+    "approaches": [
+      {
+        "name": "Top-Down Recursive (Naive)",
+        "description": "For each node, check if its subtrees are balanced and their heights differ by no more than 1.",
+        "solution": "function isBalanced(root) {\n  // Get height of a node\n  function height(node) {\n    if (node === null) return 0;\n    return Math.max(height(node.left), height(node.right)) + 1;\n  }\n  \n  // Check if tree is balanced\n  function checkBalance(node) {\n    if (node === null) return true;\n    \n    const leftHeight = height(node.left);\n    const rightHeight = height(node.right);\n    \n    return Math.abs(leftHeight - rightHeight) <= 1 && \n           checkBalance(node.left) && \n           checkBalance(node.right);\n  }\n  \n  return checkBalance(root);\n}",
+        "complexity": {
+          "time": "O(n²) in worst case as we might recalculate heights of same nodes multiple times.",
+          "space": "O(h) for recursion stack where h is the height of the tree."
+        }
+      },
+      {
+        "name": "Bottom-Up Recursive (Optimized)",
+        "description": "Calculate the height as we check for balance, terminating early if unbalanced.",
+        "solution": "function isBalanced(root) {\n  // Helper function that returns height if balanced, -1 if not balanced\n  function checkHeight(node) {\n    if (node === null) return 0;\n    \n    const leftHeight = checkHeight(node.left);\n    // If left subtree is unbalanced, propagate the result\n    if (leftHeight === -1) return -1;\n    \n    const rightHeight = checkHeight(node.right);\n    // If right subtree is unbalanced, propagate the result\n    if (rightHeight === -1) return -1;\n    \n    // Check if current node is balanced\n    if (Math.abs(leftHeight - rightHeight) > 1) {\n      return -1;  // Current node is unbalanced\n    }\n    \n    // Return height of current node\n    return Math.max(leftHeight, rightHeight) + 1;\n  }\n  \n  return checkHeight(root) !== -1;\n}",
+        "complexity": {
+          "time": "O(n) as we only visit each node once.",
+          "space": "O(h) for the recursion stack where h is the height of the tree."
+        }
+      }
+    ],
+    "completed": false,
+    "answer": {
+      "code": "/**\n * Definition for a binary tree node.\n * function TreeNode(val, left, right) {\n *     this.val = (val===undefined ? 0 : val)\n *     this.left = (left===undefined ? null : left)\n *     this.right = (right===undefined ? null : right)\n * }\n */\n/**\n * @param {TreeNode} root\n * @return {boolean}\n */\nfunction isBalanced(root) {\n  // Helper function that returns the height of a subtree if it's balanced,\n  // or -1 if it's not balanced\n  function getHeight(node) {\n    // Base case: null node has height 0\n    if (node === null) return 0;\n    \n    // Check the height of left subtree\n    const leftHeight = getHeight(node.left);\n    if (leftHeight === -1) return -1; // Left subtree is not balanced\n    \n    // Check the height of right subtree\n    const rightHeight = getHeight(node.right);\n    if (rightHeight === -1) return -1; // Right subtree is not balanced\n    \n    // Check if current node is balanced\n    if (Math.abs(leftHeight - rightHeight) > 1) return -1;\n    \n    // Return the height of current subtree\n    return Math.max(leftHeight, rightHeight) + 1;\n  }\n  \n  // A tree is balanced if getHeight doesn't return -1\n  return getHeight(root) !== -1;\n}",
+      "explanation": "I implemented the optimized bottom-up recursive approach for this problem. This approach is more efficient than the naive top-down approach because it avoids recalculating heights of the same nodes multiple times.\n\nThe algorithm works by using a helper function `getHeight` that:\n1. Returns the height of a subtree if it's balanced\n2. Returns -1 if the subtree is not balanced\n\nAs we traverse the tree from bottom to top, we check three conditions at each node:\n1. If the left subtree is not balanced, the entire tree is not balanced\n2. If the right subtree is not balanced, the entire tree is not balanced\n3. If the difference between the heights of left and right subtrees exceeds 1, the tree is not balanced\n\nIf none of these conditions are met, we calculate the height of the current subtree and return it.\n\nThis approach has a time complexity of O(n) where n is the number of nodes in the tree, as we visit each node exactly once. The space complexity is O(h) where h is the height of the tree, due to the recursion stack. In the worst case of a skewed tree, this could be O(n), but for a balanced tree, it would be O(log n)."
+    }
   }
 ]
