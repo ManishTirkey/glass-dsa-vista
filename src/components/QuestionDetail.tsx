@@ -18,52 +18,6 @@ const difficultyColors = {
   Hard: "bg-red-500/20 text-red-500"
 };
 
-// Function to apply syntax highlighting to C++ code
-const highlightCppSyntax = (code: string) => {
-  if (!code) return "";
-  
-  // Regular expressions for C++ syntax elements
-  const patterns = [
-    // Keywords
-    { pattern: /\b(auto|break|case|catch|class|const|continue|default|do|else|enum|explicit|export|extern|for|friend|goto|if|inline|mutable|namespace|new|operator|private|protected|public|register|return|sizeof|static|struct|switch|template|this|throw|try|typedef|typename|union|using|virtual|volatile|while|and|and_eq|bitand|bitor|compl|not|not_eq|or|or_eq|xor|xor_eq)\b/g, className: 'text-[#C586C0]' },
-    // Preprocessor directives
-    { pattern: /#\s*(include|define|undef|if|ifdef|ifndef|else|elif|endif|line|error|pragma)\b/g, className: 'text-[#C586C0]' },
-    // Comments
-    { pattern: /\/\/.*|\/\*[\s\S]*?\*\//g, className: 'text-[#6A9955]' },
-    // Strings
-    { pattern: /"(?:\\.|[^"\\])*"/g, className: 'text-[#CE9178]' },
-    { pattern: /'(?:\\.|[^'\\])*'/g, className: 'text-[#CE9178]' },
-    // Numbers
-    { pattern: /\b\d+(\.\d+)?\b/g, className: 'text-[#B5CEA8]' },
-    // Operators
-    { pattern: /[+\-*/%=<>!&|^~?:]/g, className: 'text-[#D4D4D4]' },
-    // Standard library headers
-    { pattern: /<(?:iostream|vector|string|map|set|algorithm|cmath|cstdio|cstdlib|cstring|cctype|functional|queue|stack|list|deque|array|unordered_map|unordered_set)>/g, className: 'text-[#9CDCFE]' },
-    // Types
-    { pattern: /\b(int|char|bool|float|double|void|unsigned|signed|long|short)\b/g, className: 'text-[#569CD6]' },
-    // STL containers and algorithms
-    { pattern: /\b(vector|string|map|set|pair|queue|stack|list|deque|array|unordered_map|unordered_set|sort|find|count|remove|reverse|unique)\b/g, className: 'text-[#4EC9B0]' },
-  ];
-
-  let result = code;
-
-  // Replace HTML special characters to prevent XSS
-  result = result
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-
-  // Apply highlighting patterns
-  for (const { pattern, className } of patterns) {
-    result = result.replace(pattern, match => `<span class="${className}">${match}</span>`);
-  }
-
-  // Replace line breaks with HTML
-  result = result.replace(/\n/g, '<br />');
-
-  return result;
-};
-
 const QuestionDetail: React.FC<QuestionDetailProps> = ({ question }) => {
   if (!question) {
     return (
@@ -125,11 +79,8 @@ const QuestionDetail: React.FC<QuestionDetailProps> = ({ question }) => {
                         <Copy className="h-4 w-4" />
                       </Button>
                     </div>
-                    <pre className="bg-[#1E1E1E] p-4 rounded-md overflow-auto text-sm border border-gray-700 font-mono">
-                      <code 
-                        className="text-[#D4D4D4]"
-                        dangerouslySetInnerHTML={{ __html: highlightCppSyntax(approach.solution) }}
-                      />
+                    <pre className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md overflow-auto text-sm border border-blue-100 dark:border-blue-800">
+                      <code>{approach.solution}</code>
                     </pre>
                   </div>
                   
@@ -169,11 +120,8 @@ const QuestionDetail: React.FC<QuestionDetailProps> = ({ question }) => {
                           <Copy className="h-4 w-4" />
                         </Button>
                       </div>
-                      <pre className="bg-[#1E1E1E] p-4 rounded-md overflow-auto text-sm border border-gray-700 font-mono">
-                        <code 
-                          className="text-[#D4D4D4]"
-                          dangerouslySetInnerHTML={{ __html: highlightCppSyntax(question.answer.code) }}
-                        />
+                      <pre className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md overflow-auto text-sm border border-blue-100 dark:border-blue-800">
+                        <code>{question.answer.code}</code>
                       </pre>
                     </div>
                   )}
