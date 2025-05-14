@@ -33,10 +33,31 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ code, language = 'cpp' }) => {
           minimap: { enabled: false },
           scrollBeyondLastLine: false,
           folding: true,
-          lineNumbers: 'on',
+          lineNumbers: 'off',
           wordWrap: 'on',
           theme: 'vs-dark',
           automaticLayout: true,
+          cursorStyle: 'none',
+          cursorBlinking: 'solid',
+          renderLineHighlight: 'none',
+          contextmenu: false,
+          hideCursorInOverviewRuler: true,
+          overviewRulerBorder: false,
+          overviewRulerLanes: 0,
+          occurrencesHighlight: false,
+          renderWhitespace: 'none',
+          glyphMargin: false,
+          guides: {
+            indentation: false
+          },
+          rulers: [],
+          scrollbar: {
+            vertical: 'auto',
+            horizontal: 'auto',
+            verticalScrollbarSize: 10,
+            horizontalScrollbarSize: 10,
+            alwaysConsumeMouseWheel: false
+          }
         }}
       />
     </div>
