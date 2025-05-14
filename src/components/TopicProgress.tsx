@@ -29,7 +29,7 @@ const TopicProgress: React.FC = () => {
         <CardTitle className="text-xl font-semibold text-gradient">Topic Progress</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[250px] pr-4">
+        <ScrollArea className="pr-4">
           <div className="space-y-5">
             {topics.map((topic, index) => (
               <div key={index}>
