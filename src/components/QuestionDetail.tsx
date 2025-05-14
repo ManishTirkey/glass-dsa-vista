@@ -18,48 +18,6 @@ const difficultyColors = {
   Hard: "bg-red-500/20 text-red-500"
 };
 
-// Syntax highlighting function to format C++ code with VS Code-like colors
-const formatCodeWithSyntax = (code: string): React.ReactNode => {
-  if (!code) return null;
-  
-  // Replace patterns with styled spans
-  const formattedCode = code
-    // Keywords
-    .replace(/\b(auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|inline|int|long|register|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|string|class|namespace|template|new|delete|try|catch|throw|using|true|false|nullptr)\b/g, 
-      '<span class="text-purple-600 dark:text-purple-400">$1</span>')
-    // Preprocessor directives
-    .replace(/(#include|#define|#ifndef|#ifdef|#endif|#pragma|#else|#elif|#undef)/g, 
-      '<span class="text-pink-600 dark:text-pink-400">$1</span>')
-    // Comments
-    .replace(/(\/\/.*?$)/gm, 
-      '<span class="text-green-600 dark:text-green-400">$1</span>')
-    // Multi-line comments
-    .replace(/(\/\*[\s\S]*?\*\/)/g, 
-      '<span class="text-green-600 dark:text-green-400">$1</span>')
-    // Strings
-    .replace(/"([^"\\]|\\.)*"/g, 
-      '<span class="text-orange-600 dark:text-orange-400">$&</span>')
-    // Numbers
-    .replace(/\b(\d+)\b/g, 
-      '<span class="text-blue-600 dark:text-blue-400">$1</span>')
-    // Operators
-    .replace(/([=+\-*/%&|^~!<>?:;])/g, 
-      '<span class="text-gray-600 dark:text-gray-400">$1</span>')
-    // Special characters
-    .replace(/([{}[\](),.])/g, 
-      '<span class="text-gray-800 dark:text-gray-300">$1</span>')
-    // Header files
-    .replace(/(&lt;.*?&gt;)/g, 
-      '<span class="text-lime-600 dark:text-lime-400">$1</span>');
-
-  // Handle angle brackets for includes
-  const finalCode = formattedCode
-    .replace(/(&lt;)([^&]*)(&gt;)/g, 
-      '<span class="text-lime-600 dark:text-lime-400">&lt;$2&gt;</span>');
-
-  return <div dangerouslySetInnerHTML={{ __html: finalCode }} />;
-};
-
 const QuestionDetail: React.FC<QuestionDetailProps> = ({ question }) => {
   if (!question) {
     return (
@@ -122,7 +80,7 @@ const QuestionDetail: React.FC<QuestionDetailProps> = ({ question }) => {
                       </Button>
                     </div>
                     <pre className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md overflow-auto text-sm border border-blue-100 dark:border-blue-800">
-                      {formatCodeWithSyntax(approach.solution)}
+                      <code>{approach.solution}</code>
                     </pre>
                   </div>
                   
@@ -163,7 +121,7 @@ const QuestionDetail: React.FC<QuestionDetailProps> = ({ question }) => {
                         </Button>
                       </div>
                       <pre className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md overflow-auto text-sm border border-blue-100 dark:border-blue-800">
-                        {formatCodeWithSyntax(question.answer.code)}
+                        <code>{question.answer.code}</code>
                       </pre>
                     </div>
                   )}
