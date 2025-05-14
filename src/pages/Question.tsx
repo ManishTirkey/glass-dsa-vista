@@ -8,18 +8,14 @@ import Footer from '@/components/Footer';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Copy } from 'lucide-react';
-import { questions } from '@/data/questionsData'; 
+import { questions } from '@/data/questionsData';
+import { copyToClipboard } from '@/lib/utils';
 
 const Question = () => {
   const { id } = useParams();
   
   // Find the question from our questions data
   const question = questions.find(q => q.id === id);
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    // In a real app, you might want to show a toast notification here
-  };
 
   if (!question) {
     return (
@@ -124,12 +120,13 @@ const Question = () => {
                               size="sm" 
                               variant="ghost" 
                               onClick={() => copyToClipboard(approach.solution)}
-                              className="h-7 w-7 p-0"
+                              className="h-7 w-7 p-0 hover:bg-blue-400/20"
+                              aria-label="Copy code to clipboard"
                             >
                               <Copy className="h-4 w-4" />
                             </Button>
                           </div>
-                          <pre className="bg-secondary/30 p-3 rounded-md overflow-auto text-sm">
+                          <pre className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md overflow-auto text-sm border border-blue-100 dark:border-blue-800">
                             <code>{approach.solution}</code>
                           </pre>
                         </div>
@@ -163,12 +160,13 @@ const Question = () => {
                                 size="sm" 
                                 variant="ghost" 
                                 onClick={() => copyToClipboard(question.answer.code)}
-                                className="h-7 w-7 p-0"
+                                className="h-7 w-7 p-0 hover:bg-blue-400/20"
+                                aria-label="Copy code to clipboard"
                               >
                                 <Copy className="h-4 w-4" />
                               </Button>
                             </div>
-                            <pre className="bg-secondary/30 p-3 rounded-md overflow-auto text-sm">
+                            <pre className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md overflow-auto text-sm border border-blue-100 dark:border-blue-800">
                               <code>{question.answer.code}</code>
                             </pre>
                           </div>
