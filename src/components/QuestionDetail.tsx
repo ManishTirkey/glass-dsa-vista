@@ -4,9 +4,9 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { Code, Copy } from 'lucide-react';
+import { Code } from 'lucide-react';
 import { Question } from '@/data/questionsData';
-import { copyToClipboard } from '@/lib/utils';
+import CodeEditor from '@/components/CodeEditor';
 
 interface QuestionDetailProps {
   question: Question | null;
@@ -67,22 +67,7 @@ const QuestionDetail: React.FC<QuestionDetailProps> = ({ question }) => {
                   <h3 className="font-semibold text-lg">Approach</h3>
                   <p>{approach.description}</p>
                   
-                  <div className="relative">
-                    <div className="absolute top-2 right-2">
-                      <Button 
-                        size="sm" 
-                        variant="ghost" 
-                        onClick={() => copyToClipboard(approach.solution)}
-                        className="h-7 w-7 p-0 hover:bg-blue-400/20"
-                        aria-label="Copy code to clipboard"
-                      >
-                        <Copy className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <pre className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md overflow-auto text-sm border border-blue-100 dark:border-blue-800">
-                      <code>{approach.solution}</code>
-                    </pre>
-                  </div>
+                  <CodeEditor code={approach.solution} language="cpp" />
                   
                   <h4 className="text-sm font-medium">Complexity Analysis</h4>
                   <ul className="text-sm space-y-1">
@@ -108,22 +93,7 @@ const QuestionDetail: React.FC<QuestionDetailProps> = ({ question }) => {
                   <p className="whitespace-pre-line">{question.answer.explanation}</p>
                   
                   {question.answer.code && (
-                    <div className="relative">
-                      <div className="absolute top-2 right-2">
-                        <Button 
-                          size="sm" 
-                          variant="ghost" 
-                          onClick={() => copyToClipboard(question.answer.code)}
-                          className="h-7 w-7 p-0 hover:bg-blue-400/20"
-                          aria-label="Copy code to clipboard"
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <pre className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md overflow-auto text-sm border border-blue-100 dark:border-blue-800">
-                        <code>{question.answer.code}</code>
-                      </pre>
-                    </div>
+                    <CodeEditor code={question.answer.code} language="cpp" />
                   )}
                 </div>
               </AccordionContent>

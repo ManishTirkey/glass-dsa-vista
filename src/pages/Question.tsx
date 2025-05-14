@@ -7,9 +7,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Copy } from 'lucide-react';
 import { questions } from '@/data/questionsData';
-import { copyToClipboard } from '@/lib/utils';
+import CodeEditor from '@/components/CodeEditor';
 
 const Question = () => {
   const { id } = useParams();
@@ -114,22 +113,7 @@ const Question = () => {
                         <p>{approach.description}</p>
                         
                         <h4 className="text-md font-semibold mt-4">Solution Code (C++)</h4>
-                        <div className="relative">
-                          <div className="absolute top-2 right-2">
-                            <Button 
-                              size="sm" 
-                              variant="ghost" 
-                              onClick={() => copyToClipboard(approach.solution)}
-                              className="h-7 w-7 p-0 hover:bg-blue-400/20"
-                              aria-label="Copy code to clipboard"
-                            >
-                              <Copy className="h-4 w-4" />
-                            </Button>
-                          </div>
-                          <pre className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md overflow-auto text-sm border border-blue-100 dark:border-blue-800">
-                            <code>{approach.solution}</code>
-                          </pre>
-                        </div>
+                        <CodeEditor code={approach.solution} language="cpp" />
                         
                         <h4 className="text-md font-semibold mt-4">Complexity Analysis</h4>
                         <ul>
@@ -154,22 +138,7 @@ const Question = () => {
                       {question.answer.code && (
                         <>
                           <h4 className="text-md font-semibold mt-4">Code Implementation (C++)</h4>
-                          <div className="relative">
-                            <div className="absolute top-2 right-2">
-                              <Button 
-                                size="sm" 
-                                variant="ghost" 
-                                onClick={() => copyToClipboard(question.answer.code)}
-                                className="h-7 w-7 p-0 hover:bg-blue-400/20"
-                                aria-label="Copy code to clipboard"
-                              >
-                                <Copy className="h-4 w-4" />
-                              </Button>
-                            </div>
-                            <pre className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-md overflow-auto text-sm border border-blue-100 dark:border-blue-800">
-                              <code>{question.answer.code}</code>
-                            </pre>
-                          </div>
+                          <CodeEditor code={question.answer.code} language="cpp" />
                         </>
                       )}
                     </div>
