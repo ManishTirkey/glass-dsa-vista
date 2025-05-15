@@ -37,7 +37,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ code, language = 'cpp' }) => {
           wordWrap: 'on',
           theme: 'vs-dark',
           automaticLayout: true,
-          cursorStyle: 'none',
+          cursorStyle: 'line',
           cursorBlinking: 'solid',
           renderLineHighlight: 'none',
           contextmenu: false,
