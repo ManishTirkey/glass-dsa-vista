@@ -46,7 +46,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ code, language = 'cpp' }) => {
           overviewRulerLanes: 0,
           occurrencesHighlight: false,
           renderWhitespace: 'none',
-          glyphMargin: false,
+          glyphMargin: "off",
           guides: {
             indentation: false
           },
