@@ -1,6 +1,7 @@
 
 import React from 'react';
-import Editor from '@monaco-editor/react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Button } from '@/components/ui/button';
 import { Copy } from 'lucide-react';
 import { copyToClipboard } from '@/lib/utils';
@@ -24,42 +25,22 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ code, language = 'cpp' }) => {
           <Copy className="h-4 w-4" />
         </Button>
       </div>
-      <Editor
-        height="250px"
-        defaultLanguage={language}
-        defaultValue={code}
-        options={{
-          readOnly: true,
-          minimap: { enabled: false },
-          scrollBeyondLastLine: false,
-          folding: true,
-          lineNumbers: 'off',
-          wordWrap: 'on',
-          theme: 'vs-dark',
-          automaticLayout: true,
-          cursorStyle: 'none',
-          cursorBlinking: 'solid',
-          renderLineHighlight: 'none',
-          contextmenu: false,
-          hideCursorInOverviewRuler: true,
-          overviewRulerBorder: false,
-          overviewRulerLanes: 0,
-          occurrencesHighlight: false,
-          renderWhitespace: 'none',
-          glyphMargin: false,
-          guides: {
-            indentation: false
-          },
-          rulers: [],
-          scrollbar: {
-            vertical: 'auto',
-            horizontal: 'auto',
-            verticalScrollbarSize: 10,
-            horizontalScrollbarSize: 10,
-            alwaysConsumeMouseWheel: false
-          }
+      <SyntaxHighlighter
+        language={language}
+        style={vscDarkPlus}
+        className="rounded-md"
+        customStyle={{
+          margin: 0,
+          padding: '1rem',
+          fontSize: '0.9rem',
+          height: '250px',
+          overflow: 'auto'
         }}
-      />
+        showLineNumbers={false}
+        wrapLongLines={true}
+      >
+        {code}
+      </SyntaxHighlighter>
     </div>
   );
 };
