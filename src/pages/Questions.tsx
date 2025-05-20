@@ -15,7 +15,7 @@ const Questions: React.FC = () => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1 max-w-7xl w-full mx-auto pt-16 px-4 md:px-8 pb-8">
-        <div className="mb-6 mt-4">
+        <div className="mb-6 mt-4 sticky top-0 bg-background/95 backdrop-blur-sm z-10 pt-2 pb-3">
           <h1 className="text-2xl md:text-4xl font-bold text-gradient mb-2 animate-fade-in">
             DSA Questions Library
           </h1>
@@ -27,12 +27,12 @@ const Questions: React.FC = () => {
         {/* Mobile/Tablet View with Tabs */}
         <div className="block md:hidden w-full mb-4">
           <Tabs defaultValue="questions" className="w-full">
-            <TabsList className="w-full mb-4">
+            <TabsList className="w-full mb-4 sticky top-[120px] z-10 bg-background/95 backdrop-blur-sm">
               <TabsTrigger value="questions" className="flex-1">Questions</TabsTrigger>
               <TabsTrigger value="details" className="flex-1">Solution Details</TabsTrigger>
             </TabsList>
             <TabsContent value="questions" className="mt-0">
-              <ScrollArea className="h-[70vh] w-full">
+              <ScrollArea className="h-[calc(100vh-220px)] w-full">
                 <QuestionList 
                   questions={questions} 
                   selectedQuestion={selectedQuestion}
@@ -41,7 +41,7 @@ const Questions: React.FC = () => {
               </ScrollArea>
             </TabsContent>
             <TabsContent value="details" className="mt-0">
-              <ScrollArea className="h-[70vh] w-full">
+              <ScrollArea className="h-[calc(100vh-220px)] w-full">
                 <QuestionDetail question={selectedQuestion} />
               </ScrollArea>
             </TabsContent>
