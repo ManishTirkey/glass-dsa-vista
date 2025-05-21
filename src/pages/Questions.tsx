@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import QuestionList from '@/components/QuestionList';
 import QuestionDetail from '@/components/QuestionDetail';
@@ -13,26 +12,25 @@ const Questions: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-1 max-w-7xl w-full mx-auto pt-16 px-4 md:px-8 pb-8">
-        <div className="mb-6 mt-4 fixed top-16 left-0 right-0 bg-background/95 backdrop-blur-sm z-20 px-4 md:px-8 py-3">
-          <h1 className="text-2xl md:text-4xl font-bold text-gradient mb-2 animate-fade-in max-w-7xl mx-auto">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-8 pb-8 pt-4">
+        <div className="mb-6 mt-4 bg-background/95 backdrop-blur-sm z-20 px-0 md:px-0 py-3">
+          <h1 className="text-2xl md:text-4xl font-bold text-gradient mb-2 animate-fade-in">
             DSA Questions Library
           </h1>
-          <p className="text-muted-foreground max-w-2xl max-w-7xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl">
             Explore all questions, filter by difficulty or topic, and expand to see detailed solutions.
           </p>
         </div>
 
         {/* Mobile/Tablet View with Tabs */}
-        <div className="block md:hidden w-full mb-4 mt-32">
+        <div className="block md:hidden w-full mb-4">
           <Tabs defaultValue="questions" className="w-full">
-            <TabsList className="w-full mb-4 fixed top-[9.5rem] left-0 right-0 z-20 px-4 mx-auto">
+            <TabsList className="w-full mb-4 z-20">
               <TabsTrigger value="questions" className="flex-1">Questions</TabsTrigger>
               <TabsTrigger value="details" className="flex-1">Solution Details</TabsTrigger>
             </TabsList>
-            <TabsContent value="questions" className="mt-8">
-              <ScrollArea className="h-[calc(100vh-280px)] w-full">
+            <TabsContent value="questions" className="mt-4">
+              <ScrollArea className="h-[calc(100vh-200px)] w-full">
                 <QuestionList 
                   questions={questions} 
                   selectedQuestion={selectedQuestion}
@@ -40,8 +38,8 @@ const Questions: React.FC = () => {
                 />
               </ScrollArea>
             </TabsContent>
-            <TabsContent value="details" className="mt-8">
-              <ScrollArea className="h-[calc(100vh-280px)] w-full">
+            <TabsContent value="details" className="mt-4">
+              <ScrollArea className="h-[calc(100vh-200px)] w-full">
                 <QuestionDetail question={selectedQuestion} />
               </ScrollArea>
             </TabsContent>
@@ -49,7 +47,7 @@ const Questions: React.FC = () => {
         </div>
 
         {/* Desktop View with Side-by-Side Panels */}
-        <div className="hidden md:grid md:grid-cols-5 gap-6 mt-32">
+        <div className="hidden md:grid md:grid-cols-5 gap-6">
           <div className="md:col-span-2">
             <ScrollArea className="h-[70vh] w-full rounded-lg">
               <QuestionList 
